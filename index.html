@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Club Deportivo La Cantera</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bordo: #7B1D2E;
+  --bordo-dark: #4A0E1A;
+  --bordo-light: #9B2D3E;
+  --dorado: #C8A951;
+  --dorado-light: #E5CC7A;
+  --negro: #0A0A0A;
+  --gris1: #141414;
+  --gris2: #1E1E1E;
+  --gris3: #2A2A2A;
+  --gris4: #444;
+  --texto: #EDE8DF;
+  --texto-dim: #888;
+  --blanco: #FFF;
+  --verde: #2ECC71;
+  --rojo: #E74C3C;
+  --amarillo: #F39C12;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);min-height:100vh;overflow-x:hidden}
+.hidden{display:none!important}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+
+/* LANDING */
+#screen-landing{background:var(–negro);position:relative;overflow:hidden;justify-content:center;align-items:center}
+#screen-landing::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 15% 50%,rgba(123,29,46,0.5) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 85% 20%,rgba(200,169,81,0.12) 0%,transparent 50%);pointer-events:none}
+.landing-bg{position:absolute;bottom:-40px;left:-20px;font-family:‘Bebas Neue’,sans-serif;font-size:clamp(100px,25vw,280px);color:rgba(200,169,81,0.04);pointer-events:none;user-select:none;white-space:nowrap}
+.landing-inner{position:relative;z-index:1;width:100%;max-width:440px;padding:24px;animation:fadeUp .7s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+
+.landing-logo{text-align:center;margin-bottom:36px}
+.logo-emblem{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(–bordo-light),var(–bordo-dark));border:3px solid var(–dorado);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:0 0 0 6px rgba(200,169,81,.1),0 20px 60px rgba(0,0,0,.6);position:relative}
+.logo-emblem::after{content:’’;position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(200,169,81,.3)}
+.logo-c{font-family:‘Bebas Neue’,sans-serif;font-size:50px;color:var(–dorado);line-height:1}
+.club-name{font-family:‘Bebas Neue’,sans-serif;font-size:30px;letter-spacing:4px;color:var(–dorado);line-height:1}
+.club-sub{font-family:‘Barlow Condensed’,sans-serif;font-size:12px;letter-spacing:3px;color:var(–texto-dim);text-transform:uppercase;margin-top:4px}
+
+/* ROLE SELECTOR */
+.role-sel{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.role-btn{background:var(–gris2);border:1px solid var(–gris3);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;color:var(–texto-dim)}
+.role-btn:hover{border-color:var(–dorado);color:var(–texto)}
+.role-btn.sel{background:var(–bordo-dark);border-color:var(–dorado);color:var(–dorado)}
+.role-icon{font-size:22px;margin-bottom:5px}
+.role-label{font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+
+/* FORM BOX */
+.fbox{background:var(–gris1);border:1px solid var(–gris3);border-radius:14px;padding:26px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.fbox-title{font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–dorado);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(–gris3)}
+.ftabs{display:flex;margin-bottom:18px;background:var(–gris2);border-radius:8px;padding:3px}
+.ftab{flex:1;background:none;border:none;padding:9px;border-radius:6px;font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(–texto-dim);cursor:pointer;transition:all .2s}
+.ftab.active{background:var(–bordo);color:var(–dorado)}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);margin-bottom:6px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(–gris2);border:1px solid var(–gris3);border-radius:8px;padding:11px 13px;color:var(–texto);font-family:‘Barlow’,sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(–dorado);box-shadow:0 0 0 3px rgba(200,169,81,.12)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(–gris4)}
+.fg select option{background:var(–gris2)}
+.btn-main{width:100%;background:var(–bordo);border:none;border-radius:8px;padding:13px;color:var(–dorado);font-family:‘Barlow Condensed’,sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:4px}
+.btn-main:hover{background:var(–bordo-light);transform:translateY(-1px);box-shadow:0 8px 20px rgba(123,29,46,.4)}
+.btn-main:active{transform:translateY(0)}
+.btn-sec{width:100%;background:transparent;border:1px solid var(–gris3);border-radius:8px;padding:11px;color:var(–texto-dim);font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:10px}
+.btn-sec:hover{border-color:var(–dorado);color:var(–dorado)}
+.msg-err{background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);color:#ff8070;padding:11px 13px;border-radius:8px;font-size:13px;margin-top:10px;text-align:center;display:none}
+.msg-ok{background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);color:#5dba80;padding:11px 13px;border-radius:8px;font-size:13px;margin-top:10px;text-align:center;display:none}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.frow{grid-template-columns:1fr}}
+
+/* APP HEADER */
+.app-header{background:var(–gris1);border-bottom:2px solid var(–bordo);padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.app-brand{display:flex;align-items:center;gap:10px}
+.app-logo{width:34px;height:34px;border-radius:50%;background:var(–bordo);border:2px solid var(–dorado);display:flex;align-items:center;justify-content:center;font-family:‘Bebas Neue’,sans-serif;font-size:17px;color:var(–dorado);flex-shrink:0}
+.app-bname{font-family:‘Bebas Neue’,sans-serif;font-size:19px;letter-spacing:2px;color:var(–dorado);line-height:1}
+.app-bsub{font-size:9px;color:var(–texto-dim);letter-spacing:.5px}
+.hright{display:flex;align-items:center;gap:10px}
+.huser{text-align:right;line-height:1.3}
+.huser-name{font-size:13px;font-weight:600;color:var(–texto)}
+.huser-rol{font-size:10px;color:var(–texto-dim);text-transform:uppercase;letter-spacing:.5px}
+.btn-logout{background:none;border:1px solid var(–gris3);border-radius:6px;padding:6px 11px;color:var(–texto-dim);font-family:‘Barlow’,sans-serif;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-logout:hover{border-color:var(–dorado);color:var(–dorado)}
+
+/* NAV */
+.app-nav{background:var(–gris2);border-bottom:1px solid rgba(200,169,81,.1);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 10px}
+.app-nav::-webkit-scrollbar{display:none}
+.nav-item{flex-shrink:0;background:none;border:none;padding:13px 16px;color:var(–texto-dim);font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;position:relative;transition:color .2s;white-space:nowrap}
+.nav-item::after{content:’’;position:absolute;bottom:0;left:0;right:0;height:2px;background:var(–dorado);transform:scaleX(0);transition:transform .2s}
+.nav-item.active{color:var(–dorado)}
+.nav-item.active::after{transform:scaleX(1)}
+.nav-item:hover{color:var(–texto)}
+
+/* CONTENT */
+.app-content{flex:1;padding:26px 18px;max-width:960px;margin:0 auto;width:100%}
+.sec{display:none;animation:fadeUp .35s ease}
+.sec.active{display:block}
+.sec-head{margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid rgba(200,169,81,.15);display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.sec-title{font-family:‘Bebas Neue’,sans-serif;font-size:30px;letter-spacing:3px;color:var(–dorado)}
+.sec-sub{font-size:12px;color:var(–texto-dim);margin-top:2px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(–bordo-dark),var(–bordo));border:1px solid rgba(200,169,81,.25);border-radius:14px;padding:32px 28px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:‘LA CANTERA’;position:absolute;right:-20px;bottom:-15px;font-family:‘Bebas Neue’,sans-serif;font-size:80px;color:rgba(200,169,81,.07);letter-spacing:4px;pointer-events:none;white-space:nowrap}
+.hero-greet{font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(200,169,81,.8);margin-bottom:5px}
+.hero-name{font-family:‘Bebas Neue’,sans-serif;font-size:34px;letter-spacing:2px;color:var(–blanco);line-height:1.1;margin-bottom:10px}
+.hero-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;max-width:480px}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
+.stat-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:10px;padding:18px 14px;text-align:center;transition:border-color .2s,transform .15s}
+.stat-card:hover{border-color:rgba(200,169,81,.4);transform:translateY(-2px)}
+.stat-n{font-family:‘Bebas Neue’,sans-serif;font-size:36px;color:var(–dorado);line-height:1}
+.stat-l{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(–texto-dim);margin-top:3px}
+
+/* IG */
+.ig-banner{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#833ab4,#fd1d1d 50%,#fcb045);border-radius:12px;padding:16px 20px;text-decoration:none;margin-bottom:20px;transition:transform .2s,box-shadow .2s}
+.ig-banner:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.3)}
+.ig-icon{font-size:26px}
+.ig-h{font-family:‘Barlow Condensed’,sans-serif;font-size:15px;font-weight:700;color:white;letter-spacing:1px;text-transform:uppercase}
+.ig-s{font-size:12px;color:rgba(255,255,255,.8)}
+
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.info-grid{grid-template-columns:1fr}}
+.info-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:10px;padding:16px}
+.info-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–dorado);margin-bottom:5px}
+.info-val{font-size:14px;color:var(–texto);font-weight:500}
+.info-val a{color:var(–dorado-light);text-decoration:none}
+
+/* PLAYERS */
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.player-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s}
+.player-card:hover{border-color:var(–dorado);transform:translateY(-3px);box-shadow:0 14px 32px rgba(0,0,0,.4)}
+.player-top{background:var(–bordo);padding:9px 13px;display:flex;align-items:center;justify-content:space-between}
+.player-num{font-family:‘Bebas Neue’,sans-serif;font-size:26px;color:var(–dorado);line-height:1}
+.player-pos-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(0,0,0,.25);color:rgba(255,255,255,.75);padding:3px 7px;border-radius:4px}
+.player-body{padding:13px}
+.player-name{font-family:‘Barlow Condensed’,sans-serif;font-size:15px;font-weight:700;color:var(–texto);text-transform:uppercase;letter-spacing:.5px;line-height:1.2;margin-bottom:9px}
+.player-meta{display:flex;flex-direction:column;gap:3px}
+.pmr{display:flex;gap:5px;font-size:11px}
+.pmk{color:var(–dorado);font-weight:700;min-width:34px;flex-shrink:0}
+.pmv{color:var(–texto-dim)}
+.perf-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-top:7px}
+.zurdo{background:rgba(200,169,81,.18);color:var(–dorado)}
+.derecho{background:rgba(123,29,46,.3);color:#cc8888}
+
+/* NOTICIAS */
+.noticias-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:540px){.noticias-grid{grid-template-columns:1fr}}
+.noticia-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .2s;cursor:pointer}
+.noticia-card:hover{border-color:rgba(200,169,81,.4);transform:translateY(-2px)}
+.noticia-img{width:100%;height:150px;object-fit:cover;background:var(–gris2);display:flex;align-items:center;justify-content:center;color:var(–gris4);font-size:36px}
+.noticia-body{padding:14px}
+.noticia-fecha{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);margin-bottom:5px}
+.noticia-titulo{font-family:‘Barlow Condensed’,sans-serif;font-size:16px;font-weight:700;color:var(–texto);letter-spacing:.3px;line-height:1.3;margin-bottom:7px}
+.noticia-texto{font-size:12px;color:var(–texto-dim);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+/* PARTIDOS */
+.partido-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;padding:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px;transition:border-color .2s}
+.partido-card:hover{border-color:rgba(200,169,81,.3)}
+.partido-rival{font-family:‘Barlow Condensed’,sans-serif;font-size:19px;font-weight:700;color:var(–texto);text-transform:uppercase;letter-spacing:.5px}
+.partido-meta{font-size:12px;color:var(–texto-dim);margin-top:3px}
+.res-badge{font-family:‘Bebas Neue’,sans-serif;font-size:24px;letter-spacing:2px;padding:7px 16px;border-radius:8px;white-space:nowrap}
+.res-w{background:rgba(46,204,113,.15);color:var(–verde);border:1px solid rgba(46,204,113,.3)}
+.res-l{background:rgba(231,76,60,.15);color:var(–rojo);border:1px solid rgba(231,76,60,.3)}
+.res-d{background:rgba(243,156,18,.15);color:var(–amarillo);border:1px solid rgba(243,156,18,.3)}
+.res-p{background:var(–gris2);color:var(–texto-dim);border:1px solid var(–gris3);font-size:12px;font-family:‘Barlow Condensed’,sans-serif;font-weight:700;letter-spacing:1px;padding:9px 16px}
+
+/* TABLA */
+.tabla-wrap{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:500px}
+thead{background:var(–bordo)}
+thead th{font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);padding:12px 13px;text-align:left}
+thead th:not(:nth-child(2)){text-align:center}
+tbody tr{border-bottom:1px solid rgba(200,169,81,.06);transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(200,169,81,.04)}
+tbody tr.hl-row{background:rgba(123,29,46,.2)}
+tbody td{padding:12px 13px;font-size:13px;color:var(–texto)}
+tbody td:not(:nth-child(2)){text-align:center}
+td.pos-n{font-family:‘Bebas Neue’,sans-serif;font-size:17px;color:var(–dorado);width:36px}
+td.team-n{font-weight:600}
+td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–dorado)}
+
+/* CUERPO TÉCNICO */
+.ct-list{display:flex;flex-direction:column;gap:10px}
+.ct-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;transition:border-color .2s}
+.ct-card:hover{border-color:rgba(200,169,81,.35)}
+.ct-av{width:42px;height:42px;border-radius:50%;background:var(–bordo);border:2px solid var(–dorado);display:flex;align-items:center;justify-content:center;font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–dorado);flex-shrink:0}
+.ct-role{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);margin-bottom:2px}
+.ct-name{font-family:‘Barlow Condensed’,sans-serif;font-size:16px;font-weight:700;color:var(–texto)}
+
+/* PAGOS */
+.resumen-pagos{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;padding:22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.res-circle{width:76px;height:76px;border-radius:50%;background:var(–bordo-dark);border:3px solid var(–dorado);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.res-circle-n{font-family:‘Bebas Neue’,sans-serif;font-size:26px;color:var(–dorado);line-height:1}
+.res-circle-l{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(200,169,81,.7)}
+.res-info h3{font-family:‘Barlow Condensed’,sans-serif;font-size:19px;font-weight:700;color:var(–texto);margin-bottom:4px}
+.res-info p{font-size:12px;color:var(–texto-dim)}
+.cuota-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;padding:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:9px;transition:border-color .2s}
+.cuota-card:hover{border-color:rgba(200,169,81,.3)}
+.cuota-mes{font-family:‘Barlow Condensed’,sans-serif;font-size:17px;font-weight:700;color:var(–texto);letter-spacing:.5px}
+.cuota-monto{font-size:12px;color:var(–texto-dim);margin-top:2px}
+.est-tag{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 13px;border-radius:20px}
+.est-ok{background:rgba(46,204,113,.15);color:var(–verde)}
+.est-pend{background:rgba(243,156,18,.15);color:var(–amarillo)}
+.est-venc{background:rgba(231,76,60,.15);color:var(–rojo)}
+.btn-mp{display:inline-flex;align-items:center;gap:7px;background:#009EE3;border:none;border-radius:8px;padding:9px 18px;color:white;font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .1s}
+.btn-mp:hover{background:#007db5;transform:translateY(-1px)}
+
+/* BENEFICIOS */
+.benef-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.benef-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;padding:20px;transition:border-color .2s,transform .2s}
+.benef-card:hover{border-color:rgba(200,169,81,.4);transform:translateY(-2px)}
+.benef-icon{font-size:30px;margin-bottom:10px}
+.benef-title{font-family:‘Barlow Condensed’,sans-serif;font-size:15px;font-weight:700;color:var(–dorado);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.benef-desc{font-size:12px;color:var(–texto-dim);line-height:1.5}
+
+/* ADMIN */
+.admin-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(200,169,81,.12);border:1px solid rgba(200,169,81,.35);border-radius:20px;padding:6px 15px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–dorado);margin-bottom:22px}
+.admin-tabs{display:flex;gap:7px;margin-bottom:22px;flex-wrap:wrap}
+.admin-tab{background:var(–gris2);border:1px solid var(–gris3);border-radius:8px;padding:8px 16px;color:var(–texto-dim);font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.admin-tab.active{background:var(–bordo);border-color:var(–bordo);color:var(–dorado)}
+.admin-tab:hover:not(.active){border-color:var(–dorado);color:var(–dorado)}
+.admin-panel{display:none}
+.admin-panel.active{display:block;animation:fadeUp .3s ease}
+.form-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;padding:22px;margin-bottom:22px}
+.form-card h3{font-family:‘Barlow Condensed’,sans-serif;font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(200,169,81,.15)}
+.list-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(–gris2);border-radius:8px;margin-bottom:7px;gap:10px;flex-wrap:wrap}
+.li-name{font-weight:600;font-size:13px;color:var(–texto)}
+.li-sub{font-size:11px;color:var(–texto-dim);margin-top:2px}
+.btn-del{background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);border-radius:6px;padding:6px 11px;color:var(–rojo);font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-del:hover{background:rgba(231,76,60,.25)}
+
+/* LOADING / EMPTY */
+.loading{display:flex;align-items:center;justify-content:center;padding:44px;color:var(–texto-dim);font-size:13px;gap:9px}
+.spinner{width:18px;height:18px;border:2px solid var(–gris3);border-top-color:var(–dorado);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:44px 20px;color:var(–texto-dim)}
+.empty-icon{font-size:44px;margin-bottom:10px;opacity:.4}
+.empty-text{font-size:13px}
+
+@media(max-width:480px){
+.app-header{padding:0 12px}
+.app-content{padding:18px 12px}
+.hero{padding:22px 18px}
+.hero-name{font-size:26px}
+.huser{display:none}
+.grid-auto{grid-template-columns:1fr 1fr}
+}
+@media(max-width:340px){.grid-auto{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+
+<!-- LANDING -->
+
+<div id="screen-landing" class="screen active">
+  <div class="landing-bg">CANTERA</div>
+  <div class="landing-inner">
+    <div class="landing-logo">
+      <div class="logo-emblem"><span class="logo-c">C</span></div>
+      <div class="club-name">Club Deportivo La Cantera</div>
+      <div class="club-sub">Córdoba · Fundado Abril 2026</div>
+    </div>
+
+```
+<div class="role-sel">
+  <div class="role-btn sel" id="rb-socio" onclick="selectRole('socio')">
+    <div class="role-icon">🏟️</div>
+    <div class="role-label">Socio</div>
+  </div>
+  <div class="role-btn" id="rb-jugador" onclick="selectRole('jugador')">
+    <div class="role-icon">⚽</div>
+    <div class="role-label">Jugador</div>
+  </div>
+</div>
+
+<!-- PANEL SOCIO -->
+<div id="panel-socio">
+  <div class="fbox">
+    <div class="ftabs">
+      <button class="ftab active" onclick="switchTab('login-s','register-s',this)">Ingresar</button>
+      <button class="ftab" onclick="switchTab('register-s','login-s',this)">Registrarse</button>
+    </div>
+    <div id="login-s">
+      <div class="fbox-title">Acceso Socios</div>
+      <div class="fg"><label>Email</label><input type="email" id="sl-email" placeholder="tu@email.com"></div>
+      <div class="fg"><label>Contraseña</label><input type="password" id="sl-pass" placeholder="Tu contraseña"></div>
+      <button class="btn-main" onclick="loginSocio()">Ingresar</button>
+      <div class="msg-err" id="sl-err"></div>
+    </div>
+    <div id="register-s" class="hidden">
+      <div class="fbox-title">Nuevo Socio</div>
+      <div class="frow">
+        <div class="fg"><label>Nombre</label><input type="text" id="sr-nom" placeholder="Juan"></div>
+        <div class="fg"><label>Apellido</label><input type="text" id="sr-ape" placeholder="García"></div>
+      </div>
+      <div class="fg"><label>Email</label><input type="email" id="sr-email" placeholder="tu@email.com"></div>
+      <div class="fg"><label>Contraseña</label><input type="password" id="sr-pass" placeholder="Mínimo 6 caracteres"></div>
+      <button class="btn-main" onclick="registerSocio()">Crear cuenta</button>
+      <div class="msg-err" id="sr-err"></div>
+      <div class="msg-ok" id="sr-ok"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL JUGADOR -->
+<div id="panel-jugador" class="hidden">
+  <div class="fbox">
+    <div class="fbox-title">Acceso Jugadores</div>
+    <div class="fg"><label>DNI</label><input type="text" id="jl-dni" placeholder="Ej: 50594699" inputmode="numeric" maxlength="10"></div>
+    <div class="fg"><label>Contraseña</label><input type="password" id="jl-pass" placeholder="Tu contraseña"></div>
+    <button class="btn-main" onclick="loginJugador()">Ingresar</button>
+    <div class="msg-err" id="jl-err"></div>
+  </div>
+</div>
+
+<button class="btn-sec" onclick="toggleAdmin()">Acceso Administrador</button>
+
+<!-- PANEL ADMIN -->
+<div id="panel-admin" class="hidden" style="margin-top:10px">
+  <div class="fbox">
+    <div class="fbox-title">Administrador</div>
+    <div class="fg"><label>Usuario</label><input type="text" id="al-user" placeholder="admin"></div>
+    <div class="fg"><label>Contraseña</label><input type="password" id="al-pass" placeholder="Contraseña"></div>
+    <button class="btn-main" onclick="loginAdmin()">Ingresar como Admin</button>
+    <div class="msg-err" id="al-err"></div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- APP -->
+
+<div id="screen-app" class="screen">
+  <header class="app-header">
+    <div class="app-brand">
+      <div class="app-logo">C</div>
+      <div>
+        <div class="app-bname">La Cantera</div>
+        <div class="app-bsub">Club Deportivo</div>
+      </div>
+    </div>
+    <div class="hright">
+      <div class="huser">
+        <div class="huser-name" id="h-nombre">—</div>
+        <div class="huser-rol" id="h-rol">—</div>
+      </div>
+      <button class="btn-logout" onclick="logout()">Salir</button>
+    </div>
+  </header>
+
+  <nav class="app-nav">
+    <button class="nav-item active" onclick="goTo('inicio',this)">Inicio</button>
+    <button class="nav-item" onclick="goTo('noticias',this)">Noticias</button>
+    <button class="nav-item" onclick="goTo('jugadores',this)">Jugadores</button>
+    <button class="nav-item" onclick="goTo('partidos',this)">Partidos</button>
+    <button class="nav-item" onclick="goTo('tabla',this)">Tabla</button>
+    <button class="nav-item" onclick="goTo('cuerpo',this)">Cuerpo Técnico</button>
+    <button class="nav-item nav-s hidden" onclick="goTo('pagos',this)">Pagos</button>
+    <button class="nav-item nav-s hidden" onclick="goTo('beneficios',this)">Beneficios</button>
+    <button class="nav-item nav-a hidden" onclick="goTo('admin',this)">⚙ Admin</button>
+  </nav>
+
+  <div class="app-content">
+
+```
+<!-- INICIO -->
+<div class="sec active" id="sec-inicio">
+  <div class="hero">
+    <div class="hero-greet">Bienvenido,</div>
+    <div class="hero-name" id="hero-name">La Cantera</div>
+    <div class="hero-desc">El club de todos. Seguí las novedades, los partidos y mantené tu cuenta al día.</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-n">19</div><div class="stat-l">Jugadores</div></div>
+    <div class="stat-card"><div class="stat-n">2026</div><div class="stat-l">Fundación</div></div>
+    <div class="stat-card"><div class="stat-n" id="stat-socios">—</div><div class="stat-l">Socios</div></div>
+    <div class="stat-card"><div class="stat-n">CBA</div><div class="stat-l">Ciudad</div></div>
+  </div>
+  <a href="https://www.instagram.com/lacantera.cd" target="_blank" class="ig-banner">
+    <div class="ig-icon">📸</div>
+    <div><div class="ig-h">Seguinos en Instagram</div><div class="ig-s">@lacantera.cd</div></div>
+  </a>
+  <div class="info-grid">
+    <div class="info-card"><div class="info-label">Director Técnico</div><div class="info-val">Facundo Fornasero</div></div>
+    <div class="info-card"><div class="info-label">Torneo</div><div class="info-val">Apertura 2026</div></div>
+    <div class="info-card"><div class="info-label">Instagram</div><div class="info-val"><a href="https://instagram.com/lacantera.cd" target="_blank">@lacantera.cd</a></div></div>
+    <div class="info-card"><div class="info-label">Formación</div><div class="info-val">4-3-3</div></div>
+  </div>
+</div>
+
+<!-- NOTICIAS -->
+<div class="sec" id="sec-noticias">
+  <div class="sec-head"><div><div class="sec-title">Noticias</div><div class="sec-sub">Últimas novedades del club</div></div></div>
+  <div id="noticias-wrap"><div class="loading"><div class="spinner"></div> Cargando...</div></div>
+</div>
+
+<!-- JUGADORES -->
+<div class="sec" id="sec-jugadores">
+  <div class="sec-head"><div><div class="sec-title">Plantel</div><div class="sec-sub">Torneo Apertura 2026</div></div></div>
+  <div id="jugadores-wrap" class="grid-auto"><div class="loading"><div class="spinner"></div></div></div>
+</div>
+
+<!-- PARTIDOS -->
+<div class="sec" id="sec-partidos">
+  <div class="sec-head"><div><div class="sec-title">Partidos</div><div class="sec-sub">Resultados y próximos encuentros</div></div></div>
+  <div id="partidos-wrap"><div class="loading"><div class="spinner"></div> Cargando...</div></div>
+</div>
+
+<!-- TABLA -->
+<div class="sec" id="sec-tabla">
+  <div class="sec-head"><div><div class="sec-title">Tabla</div><div class="sec-sub">Torneo Apertura 2026</div></div></div>
+  <div id="tabla-wrap"><div class="loading"><div class="spinner"></div> Cargando...</div></div>
+</div>
+
+<!-- CUERPO TÉCNICO -->
+<div class="sec" id="sec-cuerpo">
+  <div class="sec-head"><div><div class="sec-title">Cuerpo Técnico</div><div class="sec-sub">Plantel AFA</div></div></div>
+  <div class="ct-list">
+    <div class="ct-card"><div class="ct-av">F</div><div><div class="ct-role">Director Técnico</div><div class="ct-name">Facundo Fornasero</div></div></div>
+    <div class="ct-card"><div class="ct-av">A</div><div><div class="ct-role">Asistente Técnico</div><div class="ct-name">A definir</div></div></div>
+    <div class="ct-card"><div class="ct-av">P</div><div><div class="ct-role">Preparador Físico</div><div class="ct-name">A definir</div></div></div>
+  </div>
+</div>
+
+<!-- PAGOS -->
+<div class="sec" id="sec-pagos">
+  <div class="sec-head"><div><div class="sec-title">Mis Pagos</div><div class="sec-sub">Estado de cuotas mensuales · $15.000/mes</div></div></div>
+  <div id="pagos-wrap"><div class="loading"><div class="spinner"></div> Cargando...</div></div>
+</div>
+
+<!-- BENEFICIOS -->
+<div class="sec" id="sec-beneficios">
+  <div class="sec-head"><div><div class="sec-title">Beneficios</div><div class="sec-sub">Ventajas exclusivas para socios</div></div></div>
+  <div class="benef-grid">
+    <div class="benef-card"><div class="benef-icon">🎟️</div><div class="benef-title">Entrada gratis</div><div class="benef-desc">Acceso libre a todos los partidos locales del club durante la temporada.</div></div>
+    <div class="benef-card"><div class="benef-icon">👕</div><div class="benef-title">Descuento camisetas</div><div class="benef-desc">20% de descuento en la tienda oficial en camisetas y ropa deportiva.</div></div>
+    <div class="benef-card"><div class="benef-icon">🏋️</div><div class="benef-title">Acceso al predio</div><div class="benef-desc">Uso libre del predio de entrenamiento cuando no hay práctica del plantel.</div></div>
+    <div class="benef-card"><div class="benef-icon">🗳️</div><div class="benef-title">Voto en asambleas</div><div class="benef-desc">Participá con voz y voto en las asambleas anuales del club.</div></div>
+    <div class="benef-card"><div class="benef-icon">📸</div><div class="benef-title">Contenido exclusivo</div><div class="benef-desc">Fotos, videos y detrás de escena del plantel antes que nadie.</div></div>
+    <div class="benef-card"><div class="benef-icon">⭐</div><div class="benef-title">Carnet de socio</div><div class="benef-desc">Carnet digital oficial con tu número de socio y datos personales.</div></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="sec" id="sec-admin">
+  <div class="sec-head"><div><div class="sec-title">Panel Admin</div><div class="sec-sub">Gestión del club</div></div></div>
+  <div class="admin-badge">★ Administrador del Club</div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="showAP('jugadores',this)">Jugadores</button>
+    <button class="admin-tab" onclick="showAP('noticias',this)">Noticias</button>
+    <button class="admin-tab" onclick="showAP('partidos',this)">Partidos</button>
+    <button class="admin-tab" onclick="showAP('tabla',this)">Tabla</button>
+    <button class="admin-tab" onclick="showAP('socios',this)">Socios</button>
+  </div>
+
+  <!-- AP: JUGADORES -->
+  <div class="admin-panel active" id="ap-jugadores">
+    <div class="form-card">
+      <h3>Agregar Jugador</h3>
+      <div class="frow"><div class="fg"><label>Número</label><input type="number" id="aj-num" placeholder="20"></div><div class="fg"><label>Nombre completo</label><input type="text" id="aj-nom" placeholder="Lucas García"></div></div>
+      <div class="frow"><div class="fg"><label>Posición principal</label><input type="text" id="aj-pos" placeholder="Extremo"></div><div class="fg"><label>Posición secundaria</label><input type="text" id="aj-pos2" placeholder="Delantero"></div></div>
+      <div class="frow"><div class="fg"><label>Perfil</label><select id="aj-perf"><option value="Derecho">Derecho</option><option value="Zurdo">Zurdo</option></select></div><div class="fg"><label>Estilo</label><input type="text" id="aj-est" placeholder="Ofensivo"></div></div>
+      <div class="frow"><div class="fg"><label>DNI (para login)</label><input type="text" id="aj-dni" placeholder="12345678"></div><div class="fg"><label>Contraseña</label><input type="text" id="aj-pass" placeholder="cantera123"></div></div>
+      <button class="btn-main" style="margin-top:4px" onclick="addJugador()">Agregar Jugador</button>
+      <div class="msg-err" id="aj-err"></div><div class="msg-ok" id="aj-ok"></div>
+    </div>
+    <div id="aj-list"></div>
+  </div>
+
+  <!-- AP: NOTICIAS -->
+  <div class="admin-panel" id="ap-noticias">
+    <div class="form-card">
+      <h3>Nueva Noticia</h3>
+      <div class="fg"><label>Título</label><input type="text" id="an-tit" placeholder="Título de la noticia"></div>
+      <div class="fg"><label>URL de imagen (opcional)</label><input type="url" id="an-img" placeholder="https://..."></div>
+      <div class="fg"><label>Contenido</label><textarea id="an-cont" rows="4" placeholder="Texto de la noticia..."></textarea></div>
+      <button class="btn-main" onclick="addNoticia()">Publicar</button>
+      <div class="msg-err" id="an-err"></div><div class="msg-ok" id="an-ok"></div>
+    </div>
+    <div id="an-list"></div>
+  </div>
+
+  <!-- AP: PARTIDOS -->
+  <div class="admin-panel" id="ap-partidos">
+    <div class="form-card">
+      <h3>Cargar Partido</h3>
+      <div class="frow"><div class="fg"><label>Rival</label><input type="text" id="apa-rival" placeholder="Club Rival"></div><div class="fg"><label>Fecha</label><input type="date" id="apa-fecha"></div></div>
+      <div class="frow"><div class="fg"><label>Resultado (ej: 2-1)</label><input type="text" id="apa-res" placeholder="Dejar vacío si es futuro"></div><div class="fg"><label>Lugar</label><input type="text" id="apa-lugar" placeholder="Cancha La Cantera"></div></div>
+      <button class="btn-main" onclick="addPartido()">Guardar</button>
+      <div class="msg-err" id="apa-err"></div><div class="msg-ok" id="apa-ok"></div>
+    </div>
+    <div id="apa-list"></div>
+  </div>
+
+  <!-- AP: TABLA -->
+  <div class="admin-panel" id="ap-tabla">
+    <div class="form-card">
+      <h3>Agregar Equipo</h3>
+      <div class="frow"><div class="fg"><label>Equipo</label><input type="text" id="at-eq" placeholder="Club La Cantera"></div><div class="fg"><label>PJ</label><input type="number" id="at-pj" placeholder="0" min="0"></div></div>
+      <div class="frow"><div class="fg"><label>PG</label><input type="number" id="at-pg" placeholder="0" min="0"></div><div class="fg"><label>PE</label><input type="number" id="at-pe" placeholder="0" min="0"></div></div>
+      <div class="frow"><div class="fg"><label>PP</label><input type="number" id="at-pp" placeholder="0" min="0"></div><div class="fg"><label>GF</label><input type="number" id="at-gf" placeholder="0" min="0"></div></div>
+      <div class="frow"><div class="fg"><label>GC</label><input type="number" id="at-gc" placeholder="0" min="0"></div><div class="fg"><label>Puntos</label><input type="number" id="at-pts" placeholder="0" min="0"></div></div>
+      <button class="btn-main" onclick="addTabla()">Agregar</button>
+      <div class="msg-err" id="at-err"></div><div class="msg-ok" id="at-ok"></div>
+    </div>
+    <div id="at-list"></div>
+  </div>
+
+  <!-- AP: SOCIOS -->
+  <div class="admin-panel" id="ap-socios">
+    <div id="as-list"></div>
+  </div>
+
+</div>
+```
+
+  </div>
+</div>
+
+<script>
+// CONFIG
+const SB_URL = 'https://gssxfzdpnehkcmbabaen.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdzc3hmemRwbmVoa2NtYmFiYWVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMjI3MzYsImV4cCI6MjA5MzU5ODczNn0.N8afP_v6MTv-XjskWl3rn7DrwZbLT5Hdaz664deqmpk';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+const ADMIN_U = 'juani';
+const ADMIN_P = 'lacantera2026';
+
+const JUGADORES_BASE = [
+  {numero:1,nombre:'Juan Martín Capdevila',posicion:'Arquero',posicion2:'-',perfil:'Derecho',estilo:'-',dni:'11111111',password:'cantera1'},
+  {numero:2,nombre:'Francisco Sanz',posicion:'Def. Lateral',posicion2:'Def. Central',perfil:'Derecho',estilo:'Defensivo',dni:'22222222',password:'cantera2'},
+  {numero:3,nombre:'Bautista Vercesi',posicion:'Def. Central',posicion2:'Def. Lateral',perfil:'Derecho',estilo:'Defensivo',dni:'33333333',password:'cantera3'},
+  {numero:4,nombre:'Santiago Peirone',posicion:'Def. Central',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'44444444',password:'cantera4'},
+  {numero:5,nombre:'Santino Heredia',posicion:'Def. Lateral',posicion2:'Extremo',perfil:'Derecho',estilo:'Versátil ofensivo',dni:'55555555',password:'cantera5'},
+  {numero:6,nombre:'Vittorio Monferrato',posicion:'Def. Lateral',posicion2:'Def. Central',perfil:'Derecho',estilo:'Defensivo',dni:'66666666',password:'cantera6'},
+  {numero:7,nombre:'Joaquín Tahan',posicion:'Extremo',posicion2:'Def. Lateral',perfil:'Zurdo',estilo:'Versátil ofensivo',dni:'77777777',password:'cantera7'},
+  {numero:8,nombre:'Tomás Barrera',posicion:'Enganche',posicion2:'Mediocampista',perfil:'Derecho',estilo:'Versátil, adaptable',dni:'88888888',password:'cantera8'},
+  {numero:9,nombre:'Lucas Seifi',posicion:'Enganche',posicion2:'Mediocampista',perfil:'Derecho',estilo:'Ofensivo',dni:'99999990',password:'cantera9'},
+  {numero:10,nombre:'Tomás Abellaneda',posicion:'Mediocampista',posicion2:'-',perfil:'Derecho',estilo:'Versátil ofensivo',dni:'10101010',password:'cantera10'},
+  {numero:11,nombre:'Agustín Pérez',posicion:'Mediocampista',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'11110000',password:'cantera11'},
+  {numero:12,nombre:'Juani Saporiti',posicion:'Extremo',posicion2:'Del. / Mediocampista',perfil:'Zurdo',estilo:'Versátil, adaptable',dni:'50594699',password:'cantera12'},
+  {numero:13,nombre:'Jerónimo Pérez',posicion:'Extremo',posicion2:'Delantero / 10',perfil:'Zurdo',estilo:'Ofensivo',dni:'13131313',password:'cantera13'},
+  {numero:14,nombre:'Cristóbal López',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'14141414',password:'cantera14'},
+  {numero:15,nombre:'Agustín Barrera',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'15151515',password:'cantera15'},
+  {numero:16,nombre:'Franco Morón',posicion:'Defensor',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'16161616',password:'cantera16'},
+  {numero:17,nombre:'Franco Villagra Ortiz',posicion:'Defensor',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'17171717',password:'cantera17'},
+  {numero:18,nombre:'Lautaro Flores',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'18181818',password:'cantera18'},
+  {numero:19,nombre:'Santiago Tahan',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'19191919',password:'cantera19'},
+];
+
+let user = null;
+let role = 'socio';
+let activeNav = null;
+
+// LANDING
+function selectRole(r) {
+  role = r;
+  document.getElementById('rb-socio').classList.toggle('sel', r==='socio');
+  document.getElementById('rb-jugador').classList.toggle('sel', r==='jugador');
+  document.getElementById('panel-socio').classList.toggle('hidden', r!=='socio');
+  document.getElementById('panel-jugador').classList.toggle('hidden', r!=='jugador');
+  document.getElementById('panel-admin').classList.add('hidden');
+}
+
+function switchTab(show, hide, btn) {
+  document.getElementById(show).classList.remove('hidden');
+  document.getElementById(hide).classList.add('hidden');
+  btn.parentElement.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleAdmin() {
+  document.getElementById('panel-admin').classList.toggle('hidden');
+}
+
+// AUTH
+async function loginSocio() {
+  const email = v('sl-email'), pass = v('sl-pass'), err = document.getElementById('sl-err');
+  hide(err);
+  if (!email||!pass){showErr(err,'Completá todos los campos.');return;}
+  const {data,error} = await sb.from('socios').select('*').eq('email',email).eq('password',pass).single();
+  if(error||!data){showErr(err,'Email o contraseña incorrectos.');return;}
+  user = {tipo:'socio',nombre:data.nombre+' '+data.apellido,id:data.id};
+  enterApp();
+}
+
+async function registerSocio() {
+  const nom=v('sr-nom'),ape=v('sr-ape'),email=v('sr-email'),pass=v('sr-pass');
+  const err=document.getElementById('sr-err'),ok=document.getElementById('sr-ok');
+  hide(err);hide(ok);
+  if(!nom||!ape||!email||!pass){showErr(err,'Completá todos los campos.');return;}
+  if(pass.length<6){showErr(err,'Mínimo 6 caracteres.');return;}
+  const {error}=await sb.from('socios').insert([{nombre:nom,apellido:ape,email,password:pass}]);
+  if(error){showErr(err,error.code==='23505'?'Ese email ya está registrado.':'Error al registrarse.');return;}
+  ok.textContent='✅ ¡Cuenta creada! Ya podés ingresar.';ok.style.display='block';
+  setTimeout(()=>switchTab('login-s','register-s',document.querySelector('.ftab')),1600);
+}
+
+async function loginJugador() {
+  const dni=v('jl-dni'),pass=v('jl-pass'),err=document.getElementById('jl-err');
+  hide(err);
+  if(!dni||!pass){showErr(err,'Completá todos los campos.');return;}
+  await seedJugadores();
+  const {data,error}=await sb.from('jugadores').select('*').eq('dni',dni).eq('password',pass).single();
+  if(error||!data){showErr(err,'DNI o contraseña incorrectos.');return;}
+  user={tipo:'jugador',nombre:data.nombre,id:data.id};
+  enterApp();
+}
+
+function loginAdmin() {
+  const u=v('al-user'),p=v('al-pass'),err=document.getElementById('al-err');
+  hide(err);
+  if(u===ADMIN_U&&p===ADMIN_P){user={tipo:'admin',nombre:'Administrador'};enterApp();}
+  else showErr(err,'Credenciales incorrectas.');
+}
+
+async function enterApp() {
+  document.getElementById('screen-landing').classList.remove('active');
+  document.getElementById('screen-app').classList.add('active');
+  document.getElementById('h-nombre').textContent=user.nombre;
+  document.getElementById('hero-name').textContent=user.nombre.split(' ')[0];
+  document.getElementById('h-rol').textContent={socio:'Socio',jugador:'Jugador',admin:'⭐ Admin'}[user.tipo];
+  document.querySelectorAll('.nav-s').forEach(el=>el.classList.toggle('hidden',user.tipo==='jugador'));
+  document.querySelectorAll('.nav-a').forEach(el=>el.classList.toggle('hidden',user.tipo!=='admin'));
+  await seedJugadores();
+  loadStatSocios();
+  goTo('inicio',document.querySelector('.nav-item'));
+}
+
+function logout() {
+  user=null;
+  document.getElementById('screen-app').classList.remove('active');
+  document.getElementById('screen-landing').classList.add('active');
+  ['sl-email','sl-pass','jl-dni','jl-pass','al-user','al-pass'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  selectRole('socio');
+}
+
+// NAV
+function goTo(id, btn) {
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='jugadores')loadJugadores();
+  if(id==='noticias')loadNoticias();
+  if(id==='partidos')loadPartidos();
+  if(id==='tabla')loadTabla();
+  if(id==='pagos')loadPagos();
+  if(id==='admin'){loadAP('jugadores');loadAP('noticias');loadAP('partidos');loadAP('tabla');loadAP('socios');}
+}
+
+// SEED
+async function seedJugadores() {
+  const {data}=await sb.from('jugadores').select('id').limit(1);
+  if(data&&data.length===0) await sb.from('jugadores').insert(JUGADORES_BASE);
+}
+
+// STAT SOCIOS
+async function loadStatSocios() {
+  const {count}=await sb.from('socios').select('*',{count:'exact',head:true});
+  document.getElementById('stat-socios').textContent=count??'0';
+}
+
+// JUGADORES
+async function loadJugadores() {
+  const el=document.getElementById('jugadores-wrap');
+  el.innerHTML=loader();
+  const {data}=await sb.from('jugadores').select('*').order('numero');
+  if(!data||!data.length){el.innerHTML=empty('⚽','No hay jugadores cargados.');return;}
+  el.className='grid-auto';
+  el.innerHTML=data.map(j=>`
+    <div class="player-card">
+      <div class="player-top"><span class="player-num">${j.numero??'—'}</span><span class="player-pos-tag">${j.posicion??''}</span></div>
+      <div class="player-body">
+        <div class="player-name">${j.nombre}</div>
+        <div class="player-meta">
+          ${j.posicion2&&j.posicion2!=='-'?`<div class="pmr"><span class="pmk">Alt.</span><span class="pmv">${j.posicion2}</span></div>`:''}
+          <div class="pmr"><span class="pmk">Estilo</span><span class="pmv">${j.estilo&&j.estilo!=='-'?j.estilo:'Sin dato'}</span></div>
+        </div>
+        <span class="perf-tag ${j.perfil==='Zurdo'?'zurdo':'derecho'}">${j.perfil??''}</span>
+      </div>
+    </div>`).join('');
+}
+
+// NOTICIAS
+async function loadNoticias() {
+  const el=document.getElementById('noticias-wrap');
+  el.innerHTML=loader();
+  const {data}=await sb.from('noticias').select('*').order('fecha',{ascending:false});
+  if(!data||!data.length){el.innerHTML=empty('📰','No hay noticias publicadas todavía.');return;}
+  el.innerHTML=`<div class="noticias-grid">${data.map(n=>`
+    <div class="noticia-card">
+      ${n.imagen_url?`<img class="noticia-img" src="${n.imagen_url}" alt="${n.titulo}" onerror="this.outerHTML='<div class=noticia-img>📰</div>'">`:'<div class="noticia-img">📰</div>'}
+      <div class="noticia-body">
+        <div class="noticia-fecha">${fmt(n.fecha)}</div>
+        <div class="noticia-titulo">${n.titulo}</div>
+        <div class="noticia-texto">${n.contenido??''}</div>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+// PARTIDOS
+async function loadPartidos() {
+  const el=document.getElementById('partidos-wrap');
+  el.innerHTML=loader();
+  const {data}=await sb.from('partidos').select('*').order('fecha',{ascending:false});
+  if(!data||!data.length){el.innerHTML=empty('🏆','No hay partidos cargados todavía.');return;}
+  el.innerHTML=data.map(p=>{
+    let rb;
+    if(!p.resultado){rb=`<div class="res-badge res-p">Próximo</div>`;}
+    else{const pts=p.resultado.split('-').map(Number);const cl=pts[0]>pts[1]?'res-w':pts[0]<pts[1]?'res-l':'res-d';rb=`<div class="res-badge ${cl}">${p.resultado}</div>`;}
+    return `<div class="partido-card"><div><div class="partido-rival">vs ${p.rival}</div><div class="partido-meta">${p.fecha?fmtD(p.fecha):''} ${p.lugar?'· '+p.lugar:''}</div></div>${rb}</div>`;
+  }).join('');
+}
+
+// TABLA
+async function loadTabla() {
+  const el=document.getElementById('tabla-wrap');
+  el.innerHTML=loader();
+  const {data}=await sb.from('tabla_posiciones').select('*').order('puntos',{ascending:false});
+  if(!data||!data.length){el.innerHTML=empty('📊','La tabla está vacía. Cargá equipos desde el panel admin.');return;}
+  el.innerHTML=`<div class="tabla-wrap"><table>
+    <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GF</th><th>GC</th><th>DG</th><th>PTS</th></tr></thead>
+    <tbody>${data.map((t,i)=>`<tr class="${t.equipo?.toLowerCase().includes('cantera')?'hl-row':''}">
+      <td class="pos-n">${i+1}</td><td class="team-n">${t.equipo}</td>
+      <td>${t.pj??0}</td><td>${t.pg??0}</td><td>${t.pe??0}</td><td>${t.pp??0}</td>
+      <td>${t.gf??0}</td><td>${t.gc??0}</td><td>${(t.gf??0)-(t.gc??0)}</td><td class="pts-n">${t.puntos??0}</td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+
+// PAGOS
+async function loadPagos() {
+  if(user.tipo!=='socio')return;
+  const el=document.getElementById('pagos-wrap');
+  el.innerHTML=loader();
+  const meses=['Abril 2026','Mayo 2026','Junio 2026','Julio 2026','Agosto 2026'];
+  const {data:ex}=await sb.from('cuotas').select('*').eq('socio_id',user.id);
+  if(!ex||!ex.length){
+    await sb.from('cuotas').insert(meses.map((mes,i)=>({socio_id:user.id,mes,monto:15000,pagado:i===0})));
+  }
+  const {data}=await sb.from('cuotas').select('*').eq('socio_id',user.id).order('mes');
+  const pagadas=data?.filter(c=>c.pagado).length??0;
+  const total=data?.length??0;
+  el.innerHTML=`
+    <div class="resumen-pagos">
+      <div class="res-circle"><div class="res-circle-n">${pagadas}/${total}</div><div class="res-circle-l">Cuotas</div></div>
+      <div class="res-info"><h3>${pagadas===total?'✅ Al día':'⏳ Cuotas pendientes'}</h3><p>Cuota mensual: $15.000 · ${total-pagadas} pendiente${total-pagadas!==1?'s':''}</p></div>
+    </div>
+    ${(data??[]).map(c=>`
+      <div class="cuota-card">
+        <div><div class="cuota-mes">${c.mes}</div><div class="cuota-monto">$${Number(c.monto).toLocaleString('es-AR')}</div></div>
+        <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+          <span class="est-tag ${c.pagado?'est-ok':'est-pend'}">${c.pagado?'Pagado':'Pendiente'}</span>
+          ${!c.pagado?`<button class="btn-mp" onclick="pagarCuota('${c.id}','${c.mes}')">💳 Pagar con MP</button>`:''}
+        </div>
+      </div>`).join('')}`;
+}
+
+function pagarCuota(id,mes) {
+  // Reemplazá la URL con tu link real de Mercado Pago
+  const MP_LINK = 'https://link.mercadopago.com.ar/TU_LINK_AQUI';
+  alert('Por ahora: reemplazá MP_LINK en el código con tu link real de cobro de Mercado Pago.\n\nPodés generarlo en tu cuenta MP → Cobros → Crear link de pago.');
+  // window.open(MP_LINK + '?ref=' + id, '_blank');
+}
+
+// ADMIN PANELS
+function showAP(id, btn) {
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('ap-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  loadAP(id);
+}
+
+async function loadAP(id) {
+  if(id==='jugadores') await loadAPJugadores();
+  if(id==='noticias') await loadAPNoticias();
+  if(id==='partidos') await loadAPPartidos();
+  if(id==='tabla') await loadAPTabla();
+  if(id==='socios') await loadAPSocios();
+}
+
+async function addJugador() {
+  const d={numero:parseInt(document.getElementById('aj-num').value)||null,nombre:v('aj-nom'),posicion:v('aj-pos'),posicion2:v('aj-pos2'),perfil:document.getElementById('aj-perf').value,estilo:v('aj-est'),dni:v('aj-dni'),password:v('aj-pass')};
+  const err=document.getElementById('aj-err'),ok=document.getElementById('aj-ok');hide(err);hide(ok);
+  if(!d.nombre||!d.dni){showErr(err,'Nombre y DNI son obligatorios.');return;}
+  const {error}=await sb.from('jugadores').insert([d]);
+  if(error){showErr(err,'Error: el DNI puede estar repetido.');return;}
+  ok.textContent='✅ Jugador agregado.';ok.style.display='block';
+  loadAPJugadores();loadJugadores();
+}
+
+async function loadAPJugadores() {
+  const el=document.getElementById('aj-list');
+  const {data}=await sb.from('jugadores').select('*').order('numero');
+  if(!data||!data.length){el.innerHTML='';return;}
+  el.innerHTML=data.map(j=>`<div class="list-item"><div><div class="li-name">#${j.numero} ${j.nombre}</div><div class="li-sub">${j.posicion} · DNI: ${j.dni}</div></div><button class="btn-del" onclick="delRow('jugadores','${j.id}',loadAPJugadores)">Eliminar</button></div>`).join('');
+}
+
+async function addNoticia() {
+  const d={titulo:v('an-tit'),imagen_url:v('an-img')||null,contenido:v('an-cont')};
+  const err=document.getElementById('an-err'),ok=document.getElementById('an-ok');hide(err);hide(ok);
+  if(!d.titulo){showErr(err,'El título es obligatorio.');return;}
+  const {error}=await sb.from('noticias').insert([d]);
+  if(error){showErr(err,'Error al publicar.');return;}
+  ok.textContent='✅ Noticia publicada.';ok.style.display='block';
+  loadAPNoticias();
+}
+
+async function loadAPNoticias() {
+  const el=document.getElementById('an-list');
+  const {data}=await sb.from('noticias').select('*').order('fecha',{ascending:false});
+  if(!data||!data.length){el.innerHTML='';return;}
+  el.innerHTML=data.map(n=>`<div class="list-item"><div><div class="li-name">${n.titulo}</div><div class="li-sub">${fmt(n.fecha)}</div></div><button class="btn-del" onclick="delRow('noticias','${n.id}',loadAPNoticias)">Eliminar</button></div>`).join('');
+}
+
+async function addPartido() {
+  const d={rival:v('apa-rival'),fecha:v('apa-fecha')||null,resultado:v('apa-res')||null,lugar:v('apa-lugar')||null};
+  const err=document.getElementById('apa-err'),ok=document.getElementById('apa-ok');hide(err);hide(ok);
+  if(!d.rival){showErr(err,'El rival es obligatorio.');return;}
+  const {error}=await sb.from('partidos').insert([d]);
+  if(error){showErr(err,'Error al guardar.');return;}
+  ok.textContent='✅ Partido guardado.';ok.style.display='block';
+  loadAPPartidos();
+}
+
+async function loadAPPartidos() {
+  const el=document.getElementById('apa-list');
+  const {data}=await sb.from('partidos').select('*').order('fecha',{ascending:false});
+  if(!data||!data.length){el.innerHTML='';return;}
+  el.innerHTML=data.map(p=>`<div class="list-item"><div><div class="li-name">vs ${p.rival}</div><div class="li-sub">${p.fecha?fmtD(p.fecha):'Sin fecha'} · ${p.resultado??'Sin resultado'}</div></div><button class="btn-del" onclick="delRow('partidos','${p.id}',loadAPPartidos)">Eliminar</button></div>`).join('');
+}
+
+async function addTabla() {
+  const d={equipo:v('at-eq'),pj:parseInt(document.getElementById('at-pj').value)||0,pg:parseInt(document.getElementById('at-pg').value)||0,pe:parseInt(document.getElementById('at-pe').value)||0,pp:parseInt(document.getElementById('at-pp').value)||0,gf:parseInt(document.getElementById('at-gf').value)||0,gc:parseInt(document.getElementById('at-gc').value)||0,puntos:parseInt(document.getElementById('at-pts').value)||0};
+  const err=document.getElementById('at-err'),ok=document.getElementById('at-ok');hide(err);hide(ok);
+  if(!d.equipo){showErr(err,'El nombre del equipo es obligatorio.');return;}
+  const {error}=await sb.from('tabla_posiciones').insert([d]);
+  if(error){showErr(err,'Error. Falta crear la tabla "tabla_posiciones" en Supabase SQL Editor.');return;}
+  ok.textContent='✅ Equipo agregado.';ok.style.display='block';
+  loadAPTabla();
+}
+
+async function loadAPTabla() {
+  const el=document.getElementById('at-list');
+  const {data}=await sb.from('tabla_posiciones').select('*').order('puntos',{ascending:false});
+  if(!data||!data.length){el.innerHTML='';return;}
+  el.innerHTML=data.map((t,i)=>`<div class="list-item"><div><div class="li-name">${i+1}. ${t.equipo}</div><div class="li-sub">PJ:${t.pj} G:${t.pg} E:${t.pe} P:${t.pp} · ${t.puntos} pts</div></div><button class="btn-del" onclick="delRow('tabla_posiciones','${t.id}',loadAPTabla)">Eliminar</button></div>`).join('');
+}
+
+async function loadAPSocios() {
+  const el=document.getElementById('as-list');
+  const {data}=await sb.from('socios').select('*').order('fecha_registro',{ascending:false});
+  if(!data||!data.length){el.innerHTML=empty('👥','No hay socios registrados todavía.');return;}
+  el.innerHTML=`<div style="margin-bottom:10px;font-size:13px;color:var(--texto-dim)">${data.length} socio${data.length!==1?'s':''} registrado${data.length!==1?'s':''}</div>`+
+    data.map(s=>`<div class="list-item"><div><div class="li-name">${s.nombre} ${s.apellido}</div><div class="li-sub">${s.email} · ${fmt(s.fecha_registro)}</div></div><span class="est-tag ${s.activo?'est-ok':'est-venc'}">${s.activo?'Activo':'Inactivo'}</span></div>`).join('');
+}
+
+async function delRow(table, id, reload) {
+  if(!confirm('¿Seguro que querés eliminar este registro?'))return;
+  await sb.from(table).delete().eq('id',id);
+  reload();
+}
+
+// HELPERS
+const v = id => document.getElementById(id)?.value?.trim()??'';
+const hide = el => { el.style.display='none'; };
+const showErr = (el,msg) => { el.textContent=msg; el.style.display='block'; };
+const loader = () => '<div class="loading"><div class="spinner"></div> Cargando...</div>';
+const empty = (icon,txt) => `<div class="empty"><div class="empty-icon">${icon}</div><div class="empty-text">${txt}</div></div>`;
+const fmt = iso => iso ? new Date(iso).toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'}) : '';
+const fmtD = d => { if(!d)return''; const p=d.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; };
+
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter')return;
+  if(!document.getElementById('screen-landing').classList.contains('active'))return;
+  if(role==='socio')loginSocio();
+  else if(role==='jugador')loginJugador();
+});
+</script>
+
+</body>
+</html>

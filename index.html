@@ -907,16 +907,55 @@ async function loadAPTabla() {
 
 async function loadAPSocios() {
   const el=document.getElementById('as-list');
+  el.innerHTML=loader();
   const {data}=await sb.from('socios').select('*').order('fecha_registro',{ascending:false});
+  const {data:cuotas}=await sb.from('cuotas').select('*');
+
   if(!data||!data.length){el.innerHTML=empty('👥','No hay socios registrados todavía.');return;}
-  el.innerHTML=`<div style="margin-bottom:10px;font-size:13px;color:var(--texto-dim)">${data.length} socio${data.length!==1?'s':''} registrado${data.length!==1?'s':''}</div>`+
-    data.map(s=>`<div class="list-item">
-      <div><div class="li-name">${s.nombre} ${s.apellido}</div><div class="li-sub">${s.email} · ${fmt(s.fecha_registro)}</div></div>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <span class="est-tag ${s.activo?'est-ok':'est-pend'}">${s.activo?'Activo':'Inactivo'}</span>
-        ${!s.activo?`<button class="btn-activar-socio" onclick="activarSocio('${s.id}')">✓ Activar</button>`:''}
+
+  const activos=data.filter(s=>s.activo).length;
+  const inactivos=data.length-activos;
+
+  // Armar mapa de deuda por socio
+  const deudaMap={};
+  (cuotas||[]).forEach(c=>{
+    if(!c.pagado){
+      deudaMap[c.socio_id]=(deudaMap[c.socio_id]||0)+Number(c.monto);
+    }
+  });
+
+  el.innerHTML=`
+    <!-- RESUMEN -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+      <div style="background:white;border:1px solid var(--gris3);border-radius:10px;padding:16px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.05)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--bordo)">${data.length}</div>
+        <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--texto-dim)">Total</div>
       </div>
-    </div>`).join('');
+      <div style="background:white;border:1px solid var(--gris3);border-radius:10px;padding:16px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.05)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:#1E8A4A">${activos}</div>
+        <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--texto-dim)">Activos</div>
+      </div>
+      <div style="background:white;border:1px solid var(--gris3);border-radius:10px;padding:16px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.05)">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--bordo)">${inactivos}</div>
+        <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--texto-dim)">Inactivos</div>
+      </div>
+    </div>
+
+    <!-- LISTA -->
+    ${data.map(s=>{
+      const deuda=deudaMap[s.id]||0;
+      return `<div class="list-item">
+        <div style="flex:1">
+          <div class="li-name">${s.nombre} ${s.apellido}</div>
+          <div class="li-sub">${s.email} · ${fmt(s.fecha_registro)}</div>
+          ${deuda>0?`<div style="font-size:11px;color:var(--rojo);font-weight:700;margin-top:3px">Debe $${Number(deuda).toLocaleString('es-AR')}</div>`:`<div style="font-size:11px;color:#1E8A4A;font-weight:700;margin-top:3px">Al día ✓</div>`}
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span class="est-tag ${s.activo?'est-ok':'est-pend'}">${s.activo?'Activo':'Inactivo'}</span>
+          ${!s.activo?`<button class="btn-activar-socio" onclick="activarSocio('${s.id}')">✓ Activar</button>`:''}
+        </div>
+      </div>`;
+    }).join('')}`;
 }
 
 async function activarSocio(id) {

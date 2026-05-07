@@ -377,11 +377,11 @@ td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–bor
 
   <nav class="app-nav">
     <button class="nav-item active" onclick="goTo('inicio',this)">Inicio</button>
-    <button class="nav-item" onclick="goTo('noticias',this)">Noticias</button>
-    <button class="nav-item" onclick="goTo('jugadores',this)">Jugadores</button>
+    <button class="nav-item nav-activo-only hidden" onclick="goTo('noticias',this)">Noticias</button>
+    <button class="nav-item nav-activo-only hidden" onclick="goTo('jugadores',this)">Jugadores</button>
     <button class="nav-item" onclick="goTo('partidos',this)">Partidos</button>
-    <button class="nav-item" onclick="goTo('tabla',this)">Tabla</button>
-    <button class="nav-item" onclick="goTo('cuerpo',this)">Cuerpo Técnico</button>
+    <button class="nav-item nav-activo-only hidden" onclick="goTo('tabla',this)">Tabla</button>
+    <button class="nav-item nav-activo-only hidden" onclick="goTo('cuerpo',this)">Cuerpo Técnico</button>
     <button class="nav-item nav-s hidden" onclick="goTo('pagos',this)">Pagos</button>
     <button class="nav-item nav-s hidden" onclick="goTo('beneficios',this)">Beneficios</button>
     <button class="nav-item nav-a hidden" onclick="goTo('admin',this)">⚙ Admin</button>
@@ -396,9 +396,9 @@ td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–bor
   <div class="activation-banner hidden" id="activation-banner">
     <div class="act-icon">🎫</div>
     <div class="act-text">
-      <div class="act-title">¡Activá tu membresía!</div>
-      <div class="act-desc">Pagá tu primera cuota y desbloqueá todos los beneficios, tu carnet digital y contenido exclusivo del club.</div>
-      <button class="btn-activar" onclick="pagarActivacion()">🏦 Activar membresía — $15.000</button>
+      <div class="act-title">¡Activá tu chip!</div>
+      <div class="act-desc">Pago único de $10.000 para activar tu membresía. Una vez activo, la cuota mensual es de $3.000. Desbloqueás noticias, jugadores, tabla, cuerpo técnico y todos los beneficios del club.</div>
+      <button class="btn-activar" onclick="pagarActivacion()">🏦 Activar chip — $10.000</button>
     </div>
   </div>
   <div class="hero">
@@ -460,7 +460,7 @@ td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–bor
 
 <!-- PAGOS -->
 <div class="sec" id="sec-pagos">
-  <div class="sec-head"><div><div class="sec-title">Mis Pagos</div><div class="sec-sub">Estado de cuotas mensuales · $15.000/mes</div></div></div>
+  <div class="sec-head"><div><div class="sec-title">Mis Pagos</div><div class="sec-sub">Cuota mensual · $3.000/mes · Chip de activación $10.000</div></div></div>
   <div id="pagos-wrap"><div class="loading"><div class="spinner"></div> Cargando...</div></div>
 </div>
 
@@ -656,18 +656,32 @@ async function enterApp() {
   document.getElementById('h-nombre').textContent=user.nombre;
   document.getElementById('hero-name').textContent=user.nombre.split(' ')[0];
   document.getElementById('h-rol').textContent={socio:'Socio',jugador:'Jugador',admin:'⭐ Admin'}[user.tipo];
-  document.querySelectorAll('.nav-s').forEach(el=>el.classList.toggle('hidden',user.tipo==='jugador'));
-  document.querySelectorAll('.nav-a').forEach(el=>el.classList.toggle('hidden',user.tipo!=='admin'));
-  // Mostrar banner activación si es socio inactivo
+
+  const esSocioInactivo = user.tipo==='socio' && !user.activo;
+  const esSocioActivo = user.tipo==='socio' && user.activo;
+  const esJugador = user.tipo==='jugador';
+  const esAdmin = user.tipo==='admin';
+
+  // Nav socios activos (pagos y beneficios)
+  document.querySelectorAll('.nav-s').forEach(el=>el.classList.toggle('hidden', !esSocioActivo));
+  // Nav admin
+  document.querySelectorAll('.nav-a').forEach(el=>el.classList.toggle('hidden', !esAdmin));
+  // Nav contenido completo (noticias, jugadores, tabla, cuerpo)
+  document.querySelectorAll('.nav-activo-only').forEach(el=>{
+    el.classList.toggle('hidden', esSocioInactivo);
+  });
+
+  // Banner activación para socios inactivos
   const banner = document.getElementById('activation-banner');
-  if(banner) banner.classList.toggle('hidden', !(user.tipo==='socio' && !user.activo));
+  if(banner) banner.classList.toggle('hidden', !esSocioInactivo);
+
   await seedJugadores();
   loadStatSocios();
-  goTo('inicio',document.querySelector('.nav-item'));
+  goTo('inicio', document.querySelector('.nav-item'));
 }
 
 function pagarActivacion() {
-  alert('Para activar tu membresía transferí $15.000 al siguiente alias:\n\n🏦 ALIAS: lacantera.cd\n\nUna vez realizada la transferencia avisale al admin para activar tu cuenta.');
+  alert('Para activar tu chip transferí $10.000 al siguiente alias:\n\n🏦 ALIAS: lacantera.cd\n\nUna vez realizada la transferencia avisale al admin para activar tu cuenta.\n\nLuego la cuota mensual es de $3.000.');
 }
 
 function logout() {
@@ -779,10 +793,10 @@ async function loadPagos() {
   if(user.tipo!=='socio')return;
   const el=document.getElementById('pagos-wrap');
   el.innerHTML=loader();
-  const meses=['Abril 2026','Mayo 2026','Junio 2026','Julio 2026','Agosto 2026'];
+  const meses=['Mayo 2026','Junio 2026','Julio 2026','Agosto 2026','Septiembre 2026'];
   const {data:ex}=await sb.from('cuotas').select('*').eq('socio_id',user.id);
   if(!ex||!ex.length){
-    await sb.from('cuotas').insert(meses.map((mes,i)=>({socio_id:user.id,mes,monto:15000,pagado:i===0})));
+    await sb.from('cuotas').insert(meses.map(mes=>({socio_id:user.id,mes,monto:3000,pagado:false})));
   }
   const {data}=await sb.from('cuotas').select('*').eq('socio_id',user.id).order('mes');
   const pagadas=data?.filter(c=>c.pagado).length??0;
@@ -790,20 +804,20 @@ async function loadPagos() {
   el.innerHTML=`
     <div class="resumen-pagos">
       <div class="res-circle"><div class="res-circle-n">${pagadas}/${total}</div><div class="res-circle-l">Cuotas</div></div>
-      <div class="res-info"><h3>${pagadas===total?'✅ Al día':'⏳ Cuotas pendientes'}</h3><p>Cuota mensual: $15.000 · ${total-pagadas} pendiente${total-pagadas!==1?'s':''}</p></div>
+      <div class="res-info"><h3>${pagadas===total?'✅ Al día':'⏳ Cuotas pendientes'}</h3><p>Cuota mensual: $3.000 · ${total-pagadas} pendiente${total-pagadas!==1?'s':''}</p></div>
     </div>
     ${(data??[]).map(c=>`
       <div class="cuota-card">
         <div><div class="cuota-mes">${c.mes}</div><div class="cuota-monto">$${Number(c.monto).toLocaleString('es-AR')}</div></div>
         <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
           <span class="est-tag ${c.pagado?'est-ok':'est-pend'}">${c.pagado?'Pagado':'Pendiente'}</span>
-          ${!c.pagado?`<button class="btn-mp" onclick="pagarCuota('${c.id}','${c.mes}')">💳 Pagar con MP</button>`:''}
+          ${!c.pagado?`<button class="btn-mp" onclick="pagarCuota('${c.id}','${c.mes}')">🏦 Pagar — $3.000</button>`:''}
         </div>
       </div>`).join('')}`;
 }
 
 function pagarCuota(id,mes) {
-  alert(`Para pagar ${mes} transferí $15.000 al siguiente alias:\n\n🏦 ALIAS: lacantera.cd\n\nUna vez realizada la transferencia avisale al admin para confirmar el pago.`);
+  alert(`Para pagar ${mes} transferí $3.000 al siguiente alias:\n\n🏦 ALIAS: lacantera.cd\n\nUna vez realizada la transferencia avisale al admin para confirmar el pago.`);
 }
 
 // ADMIN PANELS

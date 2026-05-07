@@ -398,7 +398,7 @@ td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–bor
     <div class="act-text">
       <div class="act-title">¡Activá tu membresía!</div>
       <div class="act-desc">Pagá tu primera cuota y desbloqueá todos los beneficios, tu carnet digital y contenido exclusivo del club.</div>
-      <button class="btn-activar" onclick="pagarActivacion()">💳 Activar con Mercado Pago — $15.000</button>
+      <button class="btn-activar" onclick="pagarActivacion()">🏦 Activar membresía — $15.000</button>
     </div>
   </div>
   <div class="hero">
@@ -667,10 +667,7 @@ async function enterApp() {
 }
 
 function pagarActivacion() {
-  // Reemplazá con tu link real de MP
-  const MP_LINK = 'https://link.mercadopago.com.ar/TU_LINK_AQUI';
-  alert('Redirigiendo a Mercado Pago...\n\nUna vez que pagues, avisale al admin para que active tu cuenta.\n\n(Reemplazá MP_LINK en el código con tu link real de cobro)');
-  // window.open(MP_LINK, '_blank');
+  alert('Para activar tu membresía transferí $15.000 al siguiente alias:\n\n🏦 ALIAS: lacantera.cd\n\nUna vez realizada la transferencia avisale al admin para activar tu cuenta.');
 }
 
 function logout() {
@@ -806,10 +803,7 @@ async function loadPagos() {
 }
 
 function pagarCuota(id,mes) {
-  // Reemplazá la URL con tu link real de Mercado Pago
-  const MP_LINK = 'https://link.mercadopago.com.ar/TU_LINK_AQUI';
-  alert('Por ahora: reemplazá MP_LINK en el código con tu link real de cobro de Mercado Pago.\n\nPodés generarlo en tu cuenta MP → Cobros → Crear link de pago.');
-  // window.open(MP_LINK + '?ref=' + id, '_blank');
+  alert(`Para pagar ${mes} transferí $15.000 al siguiente alias:\n\n🏦 ALIAS: lacantera.cd\n\nUna vez realizada la transferencia avisale al admin para confirmar el pago.`);
 }
 
 // ADMIN PANELS

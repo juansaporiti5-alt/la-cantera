@@ -12,19 +12,19 @@
   --bordo: #7B1D2E;
   --bordo-dark: #4A0E1A;
   --bordo-light: #9B2D3E;
-  --dorado: #C8A951;
-  --dorado-light: #E5CC7A;
-  --negro: #0A0A0A;
-  --gris1: #141414;
-  --gris2: #1E1E1E;
-  --gris3: #2A2A2A;
-  --gris4: #444;
-  --texto: #EDE8DF;
-  --texto-dim: #888;
+  --dorado: #B8922A;
+  --dorado-light: #D4AE50;
+  --negro: #F5F0E8;
+  --gris1: #FFFFFF;
+  --gris2: #F0EBE1;
+  --gris3: #DDD5C8;
+  --gris4: #999;
+  --texto: #2A1A10;
+  --texto-dim: #6B5B4E;
   --blanco: #FFF;
-  --verde: #2ECC71;
-  --rojo: #E74C3C;
-  --amarillo: #F39C12;
+  --verde: #1E8A4A;
+  --rojo: #C0392B;
+  --amarillo: #C07800;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);min-height:100vh;overflow-x:hidden}
@@ -33,9 +33,9 @@ body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);
 .screen.active{display:flex}
 
 /* LANDING */
-#screen-landing{background:var(–negro);position:relative;overflow:hidden;justify-content:center;align-items:center}
-#screen-landing::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 15% 50%,rgba(123,29,46,0.5) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 85% 20%,rgba(200,169,81,0.12) 0%,transparent 50%);pointer-events:none}
-.landing-bg{position:absolute;bottom:-40px;left:-20px;font-family:‘Bebas Neue’,sans-serif;font-size:clamp(100px,25vw,280px);color:rgba(200,169,81,0.04);pointer-events:none;user-select:none;white-space:nowrap}
+#screen-landing{background:linear-gradient(160deg,#F5F0E8 0%,#EDE4D4 60%,#E8D5C0 100%);position:relative;overflow:hidden;justify-content:center;align-items:center}
+#screen-landing::before{content:’’;position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 15% 50%,rgba(123,29,46,0.08) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 85% 20%,rgba(184,146,42,0.1) 0%,transparent 50%);pointer-events:none}
+.landing-bg{position:absolute;bottom:-40px;left:-20px;font-family:‘Bebas Neue’,sans-serif;font-size:clamp(100px,25vw,280px);color:rgba(123,29,46,0.06);pointer-events:none;user-select:none;white-space:nowrap}
 .landing-inner{position:relative;z-index:1;width:100%;max-width:440px;padding:24px;animation:fadeUp .7s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
 
@@ -43,19 +43,19 @@ body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);
 .logo-emblem{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 35%,var(–bordo-light),var(–bordo-dark));border:3px solid var(–dorado);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:0 0 0 6px rgba(200,169,81,.1),0 20px 60px rgba(0,0,0,.6);position:relative}
 .logo-emblem::after{content:’’;position:absolute;inset:4px;border-radius:50%;border:1px solid rgba(200,169,81,.3)}
 .logo-c{font-family:‘Bebas Neue’,sans-serif;font-size:50px;color:var(–dorado);line-height:1}
-.club-name{font-family:‘Bebas Neue’,sans-serif;font-size:30px;letter-spacing:4px;color:var(–dorado);line-height:1}
+.club-name{font-family:‘Bebas Neue’,sans-serif;font-size:30px;letter-spacing:4px;color:var(–bordo);line-height:1}
 .club-sub{font-family:‘Barlow Condensed’,sans-serif;font-size:12px;letter-spacing:3px;color:var(–texto-dim);text-transform:uppercase;margin-top:4px}
 
 /* ROLE SELECTOR */
 .role-sel{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
-.role-btn{background:var(–gris2);border:1px solid var(–gris3);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;color:var(–texto-dim)}
-.role-btn:hover{border-color:var(–dorado);color:var(–texto)}
-.role-btn.sel{background:var(–bordo-dark);border-color:var(–dorado);color:var(–dorado)}
+.role-btn{background:white;border:2px solid var(–gris3);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;color:var(–texto-dim)}
+.role-btn:hover{border-color:var(–bordo);color:var(–bordo)}
+.role-btn.sel{background:rgba(123,29,46,.08);border-color:var(–bordo);color:var(–bordo)}
 .role-icon{font-size:22px;margin-bottom:5px}
 .role-label{font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
 
 /* FORM BOX */
-.fbox{background:var(–gris1);border:1px solid var(–gris3);border-radius:14px;padding:26px;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.fbox{background:white;border:1px solid var(–gris3);border-radius:14px;padding:26px;box-shadow:0 8px 30px rgba(123,29,46,.12)}
 .fbox-title{font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–dorado);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(–gris3)}
 .ftabs{display:flex;margin-bottom:18px;background:var(–gris2);border-radius:8px;padding:3px}
 .ftab{flex:1;background:none;border:none;padding:9px;border-radius:6px;font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(–texto-dim);cursor:pointer;transition:all .2s}
@@ -63,9 +63,9 @@ body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);
 .fg{margin-bottom:14px}
 .fg label{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);margin-bottom:6px}
 .fg input,.fg select,.fg textarea{width:100%;background:var(–gris2);border:1px solid var(–gris3);border-radius:8px;padding:11px 13px;color:var(–texto);font-family:‘Barlow’,sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(–dorado);box-shadow:0 0 0 3px rgba(200,169,81,.12)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(–bordo);box-shadow:0 0 0 3px rgba(123,29,46,.1)}
 .fg input::placeholder,.fg textarea::placeholder{color:var(–gris4)}
-.fg select option{background:var(–gris2)}
+.fg select option{background:white}
 .btn-main{width:100%;background:var(–bordo);border:none;border-radius:8px;padding:13px;color:var(–dorado);font-family:‘Barlow Condensed’,sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:4px}
 .btn-main:hover{background:var(–bordo-light);transform:translateY(-1px);box-shadow:0 8px 20px rgba(123,29,46,.4)}
 .btn-main:active{transform:translateY(0)}
@@ -77,37 +77,37 @@ body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);
 @media(max-width:480px){.frow{grid-template-columns:1fr}}
 
 /* APP HEADER */
-.app-header{background:var(–gris1);border-bottom:2px solid var(–bordo);padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.app-header{background:var(–bordo);border-bottom:2px solid var(–dorado);padding:0 18px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(74,14,26,.3)}
 .app-brand{display:flex;align-items:center;gap:10px}
-.app-logo{width:34px;height:34px;border-radius:50%;background:var(–bordo);border:2px solid var(–dorado);display:flex;align-items:center;justify-content:center;font-family:‘Bebas Neue’,sans-serif;font-size:17px;color:var(–dorado);flex-shrink:0}
+.app-logo{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.15);border:2px solid var(–dorado);display:flex;align-items:center;justify-content:center;font-family:‘Bebas Neue’,sans-serif;font-size:17px;color:var(–dorado);flex-shrink:0}
 .app-bname{font-family:‘Bebas Neue’,sans-serif;font-size:19px;letter-spacing:2px;color:var(–dorado);line-height:1}
-.app-bsub{font-size:9px;color:var(–texto-dim);letter-spacing:.5px}
+.app-bsub{font-size:9px;color:rgba(255,255,255,.6);letter-spacing:.5px}
 .hright{display:flex;align-items:center;gap:10px}
 .huser{text-align:right;line-height:1.3}
-.huser-name{font-size:13px;font-weight:600;color:var(–texto)}
-.huser-rol{font-size:10px;color:var(–texto-dim);text-transform:uppercase;letter-spacing:.5px}
-.btn-logout{background:none;border:1px solid var(–gris3);border-radius:6px;padding:6px 11px;color:var(–texto-dim);font-family:‘Barlow’,sans-serif;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.huser-name{font-size:13px;font-weight:600;color:white}
+.huser-rol{font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.5px}
+.btn-logout{background:none;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:6px 11px;color:rgba(255,255,255,.8);font-family:‘Barlow’,sans-serif;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn-logout:hover{border-color:var(–dorado);color:var(–dorado)}
 
 /* NAV */
-.app-nav{background:var(–gris2);border-bottom:1px solid rgba(200,169,81,.1);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 10px}
+.app-nav{background:white;border-bottom:2px solid var(–gris3);display:flex;overflow-x:auto;scrollbar-width:none;padding:0 10px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .app-nav::-webkit-scrollbar{display:none}
 .nav-item{flex-shrink:0;background:none;border:none;padding:13px 16px;color:var(–texto-dim);font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;position:relative;transition:color .2s;white-space:nowrap}
-.nav-item::after{content:’’;position:absolute;bottom:0;left:0;right:0;height:2px;background:var(–dorado);transform:scaleX(0);transition:transform .2s}
-.nav-item.active{color:var(–dorado)}
+.nav-item::after{content:’’;position:absolute;bottom:0;left:0;right:0;height:3px;background:var(–bordo);transform:scaleX(0);transition:transform .2s}
+.nav-item.active{color:var(–bordo)}
 .nav-item.active::after{transform:scaleX(1)}
-.nav-item:hover{color:var(–texto)}
+.nav-item:hover{color:var(–bordo)}
 
 /* CONTENT */
 .app-content{flex:1;padding:26px 18px;max-width:960px;margin:0 auto;width:100%}
 .sec{display:none;animation:fadeUp .35s ease}
 .sec.active{display:block}
 .sec-head{margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid rgba(200,169,81,.15);display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.sec-title{font-family:‘Bebas Neue’,sans-serif;font-size:30px;letter-spacing:3px;color:var(–dorado)}
+.sec-title{font-family:‘Bebas Neue’,sans-serif;font-size:30px;letter-spacing:3px;color:var(–bordo)}
 .sec-sub{font-size:12px;color:var(–texto-dim);margin-top:2px}
 
 /* HERO */
-.hero{background:linear-gradient(135deg,var(–bordo-dark),var(–bordo));border:1px solid rgba(200,169,81,.25);border-radius:14px;padding:32px 28px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero{background:linear-gradient(135deg,var(–bordo-dark),var(–bordo));border:none;border-radius:14px;padding:32px 28px;margin-bottom:20px;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(123,29,46,.3)}
 .hero::before{content:‘LA CANTERA’;position:absolute;right:-20px;bottom:-15px;font-family:‘Bebas Neue’,sans-serif;font-size:80px;color:rgba(200,169,81,.07);letter-spacing:4px;pointer-events:none;white-space:nowrap}
 .hero-greet{font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(200,169,81,.8);margin-bottom:5px}
 .hero-name{font-family:‘Bebas Neue’,sans-serif;font-size:34px;letter-spacing:2px;color:var(–blanco);line-height:1.1;margin-bottom:10px}
@@ -115,9 +115,9 @@ body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);
 
 /* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:20px}
-.stat-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:10px;padding:18px 14px;text-align:center;transition:border-color .2s,transform .15s}
-.stat-card:hover{border-color:rgba(200,169,81,.4);transform:translateY(-2px)}
-.stat-n{font-family:‘Bebas Neue’,sans-serif;font-size:36px;color:var(–dorado);line-height:1}
+.stat-card{background:white;border:1px solid var(–gris3);border-radius:10px;padding:18px 14px;text-align:center;transition:border-color .2s,transform .15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.stat-card:hover{border-color:var(–bordo);transform:translateY(-2px);box-shadow:0 6px 20px rgba(123,29,46,.15)}
+.stat-n{font-family:‘Bebas Neue’,sans-serif;font-size:36px;color:var(–bordo);line-height:1}
 .stat-l{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(–texto-dim);margin-top:3px}
 
 /* IG */
@@ -130,15 +130,15 @@ body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);
 /* INFO CARDS */
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:480px){.info-grid{grid-template-columns:1fr}}
-.info-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:10px;padding:16px}
-.info-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–dorado);margin-bottom:5px}
+.info-card{background:white;border:1px solid var(–gris3);border-radius:10px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.info-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–bordo);margin-bottom:5px}
 .info-val{font-size:14px;color:var(–texto);font-weight:500}
-.info-val a{color:var(–dorado-light);text-decoration:none}
+.info-val a{color:var(–bordo);text-decoration:none}
 
 /* PLAYERS */
 .grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
-.player-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s}
-.player-card:hover{border-color:var(–dorado);transform:translateY(-3px);box-shadow:0 14px 32px rgba(0,0,0,.4)}
+.player-card{background:white;border:1px solid var(–gris3);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.player-card:hover{border-color:var(–bordo);transform:translateY(-3px);box-shadow:0 14px 32px rgba(123,29,46,.15)}
 .player-top{background:var(–bordo);padding:9px 13px;display:flex;align-items:center;justify-content:space-between}
 .player-num{font-family:‘Bebas Neue’,sans-serif;font-size:26px;color:var(–dorado);line-height:1}
 .player-pos-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(0,0,0,.25);color:rgba(255,255,255,.75);padding:3px 7px;border-radius:4px}
@@ -146,7 +146,7 @@ body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);
 .player-name{font-family:‘Barlow Condensed’,sans-serif;font-size:15px;font-weight:700;color:var(–texto);text-transform:uppercase;letter-spacing:.5px;line-height:1.2;margin-bottom:9px}
 .player-meta{display:flex;flex-direction:column;gap:3px}
 .pmr{display:flex;gap:5px;font-size:11px}
-.pmk{color:var(–dorado);font-weight:700;min-width:34px;flex-shrink:0}
+.pmk{color:var(–bordo);font-weight:700;min-width:34px;flex-shrink:0}
 .pmv{color:var(–texto-dim)}
 .perf-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-top:7px}
 .zurdo{background:rgba(200,169,81,.18);color:var(–dorado)}
@@ -155,17 +155,17 @@ body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);
 /* NOTICIAS */
 .noticias-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:540px){.noticias-grid{grid-template-columns:1fr}}
-.noticia-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .2s;cursor:pointer}
-.noticia-card:hover{border-color:rgba(200,169,81,.4);transform:translateY(-2px)}
+.noticia-card{background:white;border:1px solid var(–gris3);border-radius:12px;overflow:hidden;transition:border-color .2s,transform .2s;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.noticia-card:hover{border-color:var(–bordo);transform:translateY(-2px)}
 .noticia-img{width:100%;height:150px;object-fit:cover;background:var(–gris2);display:flex;align-items:center;justify-content:center;color:var(–gris4);font-size:36px}
 .noticia-body{padding:14px}
-.noticia-fecha{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);margin-bottom:5px}
+.noticia-fecha{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(–bordo);margin-bottom:5px}
 .noticia-titulo{font-family:‘Barlow Condensed’,sans-serif;font-size:16px;font-weight:700;color:var(–texto);letter-spacing:.3px;line-height:1.3;margin-bottom:7px}
 .noticia-texto{font-size:12px;color:var(–texto-dim);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 
 /* PARTIDOS */
-.partido-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;padding:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px;transition:border-color .2s}
-.partido-card:hover{border-color:rgba(200,169,81,.3)}
+.partido-card{background:white;border:1px solid var(–gris3);border-radius:12px;padding:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:10px;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.partido-card:hover{border-color:var(–bordo)}
 .partido-rival{font-family:‘Barlow Condensed’,sans-serif;font-size:19px;font-weight:700;color:var(–texto);text-transform:uppercase;letter-spacing:.5px}
 .partido-meta{font-size:12px;color:var(–texto-dim);margin-top:3px}
 .res-badge{font-family:‘Bebas Neue’,sans-serif;font-size:24px;letter-spacing:2px;padding:7px 16px;border-radius:8px;white-space:nowrap}
@@ -175,27 +175,27 @@ body{font-family:'Barlow',sans-serif;background:var(--negro);color:var(--texto);
 .res-p{background:var(–gris2);color:var(–texto-dim);border:1px solid var(–gris3);font-size:12px;font-family:‘Barlow Condensed’,sans-serif;font-weight:700;letter-spacing:1px;padding:9px 16px}
 
 /* TABLA */
-.tabla-wrap{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;overflow:hidden;overflow-x:auto}
+.tabla-wrap{background:white;border:1px solid var(–gris3);border-radius:12px;overflow:hidden;overflow-x:auto;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 table{width:100%;border-collapse:collapse;min-width:500px}
 thead{background:var(–bordo)}
-thead th{font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);padding:12px 13px;text-align:left}
+thead th{font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:white;padding:12px 13px;text-align:left}
 thead th:not(:nth-child(2)){text-align:center}
-tbody tr{border-bottom:1px solid rgba(200,169,81,.06);transition:background .15s}
+tbody tr{border-bottom:1px solid var(–gris3);transition:background .15s}
 tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:rgba(200,169,81,.04)}
-tbody tr.hl-row{background:rgba(123,29,46,.2)}
+tbody tr:hover{background:rgba(123,29,46,.04)}
+tbody tr.hl-row{background:rgba(123,29,46,.08);font-weight:700}
 tbody td{padding:12px 13px;font-size:13px;color:var(–texto)}
 tbody td:not(:nth-child(2)){text-align:center}
-td.pos-n{font-family:‘Bebas Neue’,sans-serif;font-size:17px;color:var(–dorado);width:36px}
+td.pos-n{font-family:‘Bebas Neue’,sans-serif;font-size:17px;color:var(–bordo);width:36px}
 td.team-n{font-weight:600}
-td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–dorado)}
+td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–bordo)}
 
 /* CUERPO TÉCNICO */
 .ct-list{display:flex;flex-direction:column;gap:10px}
-.ct-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;transition:border-color .2s}
-.ct-card:hover{border-color:rgba(200,169,81,.35)}
-.ct-av{width:42px;height:42px;border-radius:50%;background:var(–bordo);border:2px solid var(–dorado);display:flex;align-items:center;justify-content:center;font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–dorado);flex-shrink:0}
-.ct-role{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);margin-bottom:2px}
+.ct-card{background:white;border:1px solid var(–gris3);border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;transition:border-color .2s;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.ct-card:hover{border-color:var(–bordo)}
+.ct-av{width:42px;height:42px;border-radius:50%;background:var(–bordo);border:2px solid var(–dorado);display:flex;align-items:center;justify-content:center;font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:white;flex-shrink:0}
+.ct-role{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–bordo);margin-bottom:2px}
 .ct-name{font-family:‘Barlow Condensed’,sans-serif;font-size:16px;font-weight:700;color:var(–texto)}
 
 /* PAGOS */
@@ -225,15 +225,15 @@ td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–dor
 .benef-desc{font-size:12px;color:var(–texto-dim);line-height:1.5}
 
 /* ADMIN */
-.admin-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(200,169,81,.12);border:1px solid rgba(200,169,81,.35);border-radius:20px;padding:6px 15px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–dorado);margin-bottom:22px}
+.admin-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(123,29,46,.1);border:1px solid rgba(123,29,46,.3);border-radius:20px;padding:6px 15px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(–bordo);margin-bottom:22px}
 .admin-tabs{display:flex;gap:7px;margin-bottom:22px;flex-wrap:wrap}
-.admin-tab{background:var(–gris2);border:1px solid var(–gris3);border-radius:8px;padding:8px 16px;color:var(–texto-dim);font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
-.admin-tab.active{background:var(–bordo);border-color:var(–bordo);color:var(–dorado)}
-.admin-tab:hover:not(.active){border-color:var(–dorado);color:var(–dorado)}
+.admin-tab{background:white;border:1px solid var(–gris3);border-radius:8px;padding:8px 16px;color:var(–texto-dim);font-family:‘Barlow Condensed’,sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.admin-tab.active{background:var(–bordo);border-color:var(–bordo);color:white}
+.admin-tab:hover:not(.active){border-color:var(–bordo);color:var(–bordo)}
 .admin-panel{display:none}
 .admin-panel.active{display:block;animation:fadeUp .3s ease}
-.form-card{background:var(–gris1);border:1px solid rgba(200,169,81,.12);border-radius:12px;padding:22px;margin-bottom:22px}
-.form-card h3{font-family:‘Barlow Condensed’,sans-serif;font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–dorado);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(200,169,81,.15)}
+.form-card{background:white;border:1px solid var(–gris3);border-radius:12px;padding:22px;margin-bottom:22px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.form-card h3{font-family:‘Barlow Condensed’,sans-serif;font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(–bordo);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(–gris3)}
 .list-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(–gris2);border-radius:8px;margin-bottom:7px;gap:10px;flex-wrap:wrap}
 .li-name{font-weight:600;font-size:13px;color:var(–texto)}
 .li-sub{font-size:11px;color:var(–texto-dim);margin-top:2px}
@@ -242,11 +242,24 @@ td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–dor
 
 /* LOADING / EMPTY */
 .loading{display:flex;align-items:center;justify-content:center;padding:44px;color:var(–texto-dim);font-size:13px;gap:9px}
-.spinner{width:18px;height:18px;border:2px solid var(–gris3);border-top-color:var(–dorado);border-radius:50%;animation:spin .7s linear infinite}
+.spinner{width:18px;height:18px;border:2px solid var(–gris3);border-top-color:var(–bordo);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty{text-align:center;padding:44px 20px;color:var(–texto-dim)}
 .empty-icon{font-size:44px;margin-bottom:10px;opacity:.4}
 .empty-text{font-size:13px}
+
+/* ACTIVATION BANNER */
+.activation-banner{background:linear-gradient(135deg,var(–bordo-dark),var(–bordo));border-radius:14px;padding:24px 22px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(123,29,46,.25)}
+.act-icon{font-size:36px;flex-shrink:0}
+.act-text{flex:1}
+.act-title{font-family:‘Bebas Neue’,sans-serif;font-size:22px;letter-spacing:2px;color:white;line-height:1;margin-bottom:4px}
+.act-desc{font-size:13px;color:rgba(255,255,255,.75);line-height:1.5}
+.btn-activar{background:var(–dorado);border:none;border-radius:8px;padding:12px 22px;color:var(–bordo-dark);font-family:‘Barlow Condensed’,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap;margin-top:8px}
+.btn-activar:hover{background:var(–dorado-light);transform:translateY(-1px)}
+
+/* ADMIN ACTIVAR SOCIO */
+.btn-activar-socio{background:rgba(46,180,100,.15);border:1px solid rgba(46,180,100,.3);border-radius:6px;padding:6px 12px;color:var(–verde);font-family:‘Barlow Condensed’,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-activar-socio:hover{background:rgba(46,180,100,.25)}
 
 @media(max-width:480px){
 .app-header{padding:0 12px}
@@ -379,6 +392,15 @@ td.pts-n{font-family:‘Bebas Neue’,sans-serif;font-size:19px;color:var(–dor
 ```
 <!-- INICIO -->
 <div class="sec active" id="sec-inicio">
+  <!-- BANNER ACTIVACIÓN (solo socios inactivos) -->
+  <div class="activation-banner hidden" id="activation-banner">
+    <div class="act-icon">🎫</div>
+    <div class="act-text">
+      <div class="act-title">¡Activá tu membresía!</div>
+      <div class="act-desc">Pagá tu primera cuota y desbloqueá todos los beneficios, tu carnet digital y contenido exclusivo del club.</div>
+      <button class="btn-activar" onclick="pagarActivacion()">💳 Activar con Mercado Pago — $15.000</button>
+    </div>
+  </div>
   <div class="hero">
     <div class="hero-greet">Bienvenido,</div>
     <div class="hero-name" id="hero-name">La Cantera</div>
@@ -541,25 +563,25 @@ const ADMIN_U = 'juani';
 const ADMIN_P = 'lacantera2026';
 
 const JUGADORES_BASE = [
-  {numero:1,nombre:'Juan Martín Capdevila',posicion:'Arquero',posicion2:'-',perfil:'Derecho',estilo:'-',dni:'11111111',password:'cantera1'},
-  {numero:2,nombre:'Francisco Sanz',posicion:'Def. Lateral',posicion2:'Def. Central',perfil:'Derecho',estilo:'Defensivo',dni:'22222222',password:'cantera2'},
-  {numero:3,nombre:'Bautista Vercesi',posicion:'Def. Central',posicion2:'Def. Lateral',perfil:'Derecho',estilo:'Defensivo',dni:'33333333',password:'cantera3'},
-  {numero:4,nombre:'Santiago Peirone',posicion:'Def. Central',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'44444444',password:'cantera4'},
-  {numero:5,nombre:'Santino Heredia',posicion:'Def. Lateral',posicion2:'Extremo',perfil:'Derecho',estilo:'Versátil ofensivo',dni:'55555555',password:'cantera5'},
-  {numero:6,nombre:'Vittorio Monferrato',posicion:'Def. Lateral',posicion2:'Def. Central',perfil:'Derecho',estilo:'Defensivo',dni:'66666666',password:'cantera6'},
-  {numero:7,nombre:'Joaquín Tahan',posicion:'Extremo',posicion2:'Def. Lateral',perfil:'Zurdo',estilo:'Versátil ofensivo',dni:'77777777',password:'cantera7'},
-  {numero:8,nombre:'Tomás Barrera',posicion:'Enganche',posicion2:'Mediocampista',perfil:'Derecho',estilo:'Versátil, adaptable',dni:'88888888',password:'cantera8'},
-  {numero:9,nombre:'Lucas Seifi',posicion:'Enganche',posicion2:'Mediocampista',perfil:'Derecho',estilo:'Ofensivo',dni:'99999990',password:'cantera9'},
-  {numero:10,nombre:'Tomás Abellaneda',posicion:'Mediocampista',posicion2:'-',perfil:'Derecho',estilo:'Versátil ofensivo',dni:'10101010',password:'cantera10'},
-  {numero:11,nombre:'Agustín Pérez',posicion:'Mediocampista',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'11110000',password:'cantera11'},
-  {numero:12,nombre:'Juani Saporiti',posicion:'Extremo',posicion2:'Del. / Mediocampista',perfil:'Zurdo',estilo:'Versátil, adaptable',dni:'50594699',password:'cantera12'},
-  {numero:13,nombre:'Jerónimo Pérez',posicion:'Extremo',posicion2:'Delantero / 10',perfil:'Zurdo',estilo:'Ofensivo',dni:'13131313',password:'cantera13'},
-  {numero:14,nombre:'Cristóbal López',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'14141414',password:'cantera14'},
-  {numero:15,nombre:'Agustín Barrera',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'15151515',password:'cantera15'},
-  {numero:16,nombre:'Franco Morón',posicion:'Defensor',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'16161616',password:'cantera16'},
-  {numero:17,nombre:'Franco Villagra Ortiz',posicion:'Defensor',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'17171717',password:'cantera17'},
-  {numero:18,nombre:'Lautaro Flores',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'18181818',password:'cantera18'},
-  {numero:19,nombre:'Santiago Tahan',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'19191919',password:'cantera19'},
+  {numero:1,nombre:'Juan Martín Capdevila',posicion:'Arquero',posicion2:'-',perfil:'Derecho',estilo:'-',dni:'50180197',password:'50180197'},
+  {numero:2,nombre:'Francisco Sanz',posicion:'Def. Lateral',posicion2:'Def. Central',perfil:'Derecho',estilo:'Defensivo',dni:'00000001',password:'00000001'},
+  {numero:3,nombre:'Bautista Vercesi',posicion:'Def. Central',posicion2:'Def. Lateral',perfil:'Derecho',estilo:'Defensivo',dni:'50627025',password:'50627025'},
+  {numero:4,nombre:'Santiago Peirone',posicion:'Def. Central',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'49914869',password:'49914869'},
+  {numero:5,nombre:'Santino Heredia',posicion:'Def. Lateral',posicion2:'Extremo',perfil:'Derecho',estilo:'Versátil ofensivo',dni:'50420483',password:'50420483'},
+  {numero:6,nombre:'Vittorio Monferrato',posicion:'Def. Lateral',posicion2:'Def. Central',perfil:'Derecho',estilo:'Defensivo',dni:'00000002',password:'00000002'},
+  {numero:7,nombre:'Joaquín Tahan',posicion:'Extremo',posicion2:'Def. Lateral',perfil:'Zurdo',estilo:'Versátil ofensivo',dni:'50939285',password:'50939285'},
+  {numero:8,nombre:'Tomás Barrera',posicion:'Enganche',posicion2:'Mediocampista',perfil:'Derecho',estilo:'Versátil, adaptable',dni:'50331355',password:'50331355'},
+  {numero:9,nombre:'Lucas Seifi',posicion:'Enganche',posicion2:'Mediocampista',perfil:'Derecho',estilo:'Ofensivo',dni:'00000003',password:'00000003'},
+  {numero:10,nombre:'Tomás Abellaneda',posicion:'Mediocampista',posicion2:'-',perfil:'Derecho',estilo:'Versátil ofensivo',dni:'50421152',password:'50421152'},
+  {numero:11,nombre:'Agustín Pérez',posicion:'Mediocampista',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'00000004',password:'00000004'},
+  {numero:12,nombre:'Juani Saporiti',posicion:'Extremo',posicion2:'Del. / Mediocampista',perfil:'Zurdo',estilo:'Versátil, adaptable',dni:'50594699',password:'50594699'},
+  {numero:13,nombre:'Jerónimo Pérez Scarafia',posicion:'Extremo',posicion2:'Delantero / 10',perfil:'Zurdo',estilo:'Ofensivo',dni:'50995536',password:'50995536'},
+  {numero:14,nombre:'Cristóbal López Alaniz',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'50627604',password:'50627604'},
+  {numero:15,nombre:'Agustín Barrera',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'45693090',password:'45693090'},
+  {numero:16,nombre:'Franco Morón',posicion:'Defensor',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'45934310',password:'45934310'},
+  {numero:17,nombre:'Franco Villagra Ortiz',posicion:'Defensor',posicion2:'-',perfil:'Derecho',estilo:'Defensivo',dni:'00000005',password:'00000005'},
+  {numero:18,nombre:'Lautaro Flores',posicion:'Delantero',posicion2:'-',perfil:'Derecho',estilo:'Ofensivo',dni:'00000006',password:'00000006'},
+  {numero:19,nombre:'Julio Augusto Casas Farah',posicion:'Mediocampista',posicion2:'-',perfil:'Derecho',estilo:'Versátil',dni:'50593513',password:'50593513'},
 ];
 
 let user = null;
@@ -594,7 +616,7 @@ async function loginSocio() {
   if (!email||!pass){showErr(err,'Completá todos los campos.');return;}
   const {data,error} = await sb.from('socios').select('*').eq('email',email).eq('password',pass).single();
   if(error||!data){showErr(err,'Email o contraseña incorrectos.');return;}
-  user = {tipo:'socio',nombre:data.nombre+' '+data.apellido,id:data.id};
+  user = {tipo:'socio',nombre:data.nombre+' '+data.apellido,id:data.id,activo:data.activo};
   enterApp();
 }
 
@@ -636,9 +658,19 @@ async function enterApp() {
   document.getElementById('h-rol').textContent={socio:'Socio',jugador:'Jugador',admin:'⭐ Admin'}[user.tipo];
   document.querySelectorAll('.nav-s').forEach(el=>el.classList.toggle('hidden',user.tipo==='jugador'));
   document.querySelectorAll('.nav-a').forEach(el=>el.classList.toggle('hidden',user.tipo!=='admin'));
+  // Mostrar banner activación si es socio inactivo
+  const banner = document.getElementById('activation-banner');
+  if(banner) banner.classList.toggle('hidden', !(user.tipo==='socio' && !user.activo));
   await seedJugadores();
   loadStatSocios();
   goTo('inicio',document.querySelector('.nav-item'));
+}
+
+function pagarActivacion() {
+  // Reemplazá con tu link real de MP
+  const MP_LINK = 'https://link.mercadopago.com.ar/TU_LINK_AQUI';
+  alert('Redirigiendo a Mercado Pago...\n\nUna vez que pagues, avisale al admin para que active tu cuenta.\n\n(Reemplazá MP_LINK en el código con tu link real de cobro)');
+  // window.open(MP_LINK, '_blank');
 }
 
 function logout() {
@@ -663,10 +695,13 @@ function goTo(id, btn) {
   if(id==='admin'){loadAP('jugadores');loadAP('noticias');loadAP('partidos');loadAP('tabla');loadAP('socios');}
 }
 
-// SEED
+// SEED - borra y recarga jugadores si los DNIs cambiaron
 async function seedJugadores() {
-  const {data}=await sb.from('jugadores').select('id').limit(1);
-  if(data&&data.length===0) await sb.from('jugadores').insert(JUGADORES_BASE);
+  const {data}=await sb.from('jugadores').select('id,dni').limit(1);
+  if(data&&data.length>0 && data[0].dni === JUGADORES_BASE[0].dni) return; // ya están actualizados
+  // Si los DNIs son distintos, borra todo y recarga
+  if(data&&data.length>0) await sb.from('jugadores').delete().neq('id','00000000-0000-0000-0000-000000000000');
+  await sb.from('jugadores').insert(JUGADORES_BASE);
 }
 
 // STAT SOCIOS
@@ -867,7 +902,19 @@ async function loadAPSocios() {
   const {data}=await sb.from('socios').select('*').order('fecha_registro',{ascending:false});
   if(!data||!data.length){el.innerHTML=empty('👥','No hay socios registrados todavía.');return;}
   el.innerHTML=`<div style="margin-bottom:10px;font-size:13px;color:var(--texto-dim)">${data.length} socio${data.length!==1?'s':''} registrado${data.length!==1?'s':''}</div>`+
-    data.map(s=>`<div class="list-item"><div><div class="li-name">${s.nombre} ${s.apellido}</div><div class="li-sub">${s.email} · ${fmt(s.fecha_registro)}</div></div><span class="est-tag ${s.activo?'est-ok':'est-venc'}">${s.activo?'Activo':'Inactivo'}</span></div>`).join('');
+    data.map(s=>`<div class="list-item">
+      <div><div class="li-name">${s.nombre} ${s.apellido}</div><div class="li-sub">${s.email} · ${fmt(s.fecha_registro)}</div></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="est-tag ${s.activo?'est-ok':'est-pend'}">${s.activo?'Activo':'Inactivo'}</span>
+        ${!s.activo?`<button class="btn-activar-socio" onclick="activarSocio('${s.id}')">✓ Activar</button>`:''}
+      </div>
+    </div>`).join('');
+}
+
+async function activarSocio(id) {
+  await sb.from('socios').update({activo:true}).eq('id',id);
+  loadAPSocios();
+  loadStatSocios();
 }
 
 async function delRow(table, id, reload) {
